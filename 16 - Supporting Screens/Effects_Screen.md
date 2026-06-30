@@ -1,0 +1,31 @@
+---
+Source: https://leap.sei.org/help24/Supporting_Screens/Effects_Screen.htm
+---
+
+# Effects
+
+Menu Option: General: Effects (also shown on the [main toolbar](../03%20-%20Interface/Main_Toolbar.md))
+
+![](../assets/images/NewScreens/Effects.png)
+
+## Introduction
+
+The effects screen is the place where you view or edit the data describing different environmental effects (i.e. pollutants and other direct environmental impacts). LEAP includes a default set of data for 258 different effects, including documentation on the nature of many important effects. The list of effects includes all gases listed in the most recent climate change assessment of the Intergovernmental Panel on Climate Change ([IPCC, AR5 2013](http://www.ipcc.ch/publications_and_data/publications_and_data_reports.shtml)). Each effect is listed by name and also includes a secondary field containing an abbreviation or in some cases the chemical formula for the effect. Effects are divided into categories including major greenhouse gases (GHGs) , local air pollutants, other effects (such as solid waste, water effluents, injuries, deaths, land degradation, etc.) and major groups of chemicals such as halogenated alcohols, ethers, hydrofluorocarbon, chlorocarbons, hydrochlorocarbons, bromocarbons, hydrobromocarbons and halons, etc.
+
+Note: LEAP's main effect calculations are only able to calculate effects that can be directly associated with energy use. For national scale models, LEAP's [Impact Benefits Calculator (IBC) module](../12%20-%20The%20Impact%20Benefits%20Calculator%20%28IBC)/Introduction_to_IBC.md) can also examine indirect impacts, namely health impacts and air pollution concentrations (air quality).
+
+## Using the Effects Screen
+
+To keep the effect selection options in the rest of LEAP's screens manageably short, all effects other than major GHGs and local air pollutants are, by default, hidden. To select among these other complex effects, go to the Scope & Scale tab of the General: [Settings](Basic_Parameters_Screen.md#Scope) screen and check the box marked Complex Effects.
+
+While the included effects will more than suffice for most analyses, you may wish to edit or add your own effects, to change the name of existing effects, or edit the factors used for the global warming potential (GWP) of GHGs.  Use the Add button (![](../assets/images/NewButtons/Add.png)) to add a new effect. You may also use the Delete button (![](../assets/images/NewButtons/Delete.png)) to delete an effect, although this is not normally required and is not recommended. Use the tabs at the top of the screen to switch between a view showing a table showing effects or one showing one effect at a time. Use the Show selection box to filter the effects displayed. Initially the Effects screen shows only the effects being actively used in the current Area. You can also show All effects, All effects with non-zero GWP values or individual categories of effects such as major GHGs, local air pollutants, chlorofluorocarbons, hydrofluorocarbons, etc.
+
+Click the ![](../assets/images/NewButtons/MS-Excel.png) button to export the Effects table to Microsoft Excel.  You can sort the table on many of the columns including name, abbreviation/formula, category and GWP values. To sort on a column click in the column title area. Click again to switch between ascending descending sort orders. A sort indicator is displayed in the column title to show which column is being sorted. The table shows a triangle pointing up for ascending or down for descending sorts.
+
+## Setting Global Warming Potentials (GWPs) to Match IPCC Assessment Values
+
+Use the IPCC Assessment button on the toolbar to select different sets of Global Warming Potential (GWP) values corresponding to one of the IPCC Assessment Reports (AR1 - AR6). For the fifth assessment report (AR5) you can either choose GWP values excluding climate carbon feed backs (recommended) or values that do include these feed backs. After selecting a set of GWP values, you can also manually edit one or more of those values. A label marked "edited" in the Effects screen toolbar will alert you if any of the GWP values have been edited. By default, LEAP's GHG emissions calculations use whatever GWP values are specified in the Effects table. However, you can override these values in any particular scenario so that you can do a sensitivity calculation that shows the differences in overall GWP that arise from the use of GWP values corresponding to different IPCC assessment reports. Use the General: [Scenarios](Scenario_Manager.md) screen to specify a specific set of GWP values for a particular scenario.
+
+LEAP includes 20, 100 and 500-year GWP values. These values reflect the relative potential of each effect over each period.  Each value is specified in units of tonnes of CO2 equivalent per tonne of pollutant (T CO2e/T). That is, the GWP values measure the warming potential of a tonne of each gas relative to a tonne of CO2. Thus, the GWP of CO2 is set to 1 for all integrating periods across all assessment reports. LEAP includes GWP values for all major pollutants including the major greenhouse gases (CO2, CH4, N2O) as well as all high GWP gases and complex chemicals such as halogenated alcohols, ethers, hydrofluorocarbons, chlorocarbons, hydrochlorocarbons, bromocarbons, hydrobromocarbons and halons.
+
+When showing AR5 or AR6 values, the Effects screen will display values for additional climate change metrics across various different integrating periods (20, 50, and 100 years). These metrics include: Absolute Global Warming Potential (AGWP), Global Temperature Potential (GTP), Absolute Global Temperature Potential (AGTP), radiative efficiency and the lifetime of each effect in years or days. These additional metric are included for information only. They are not currently utilized in LEAP's calculations. LEAP's calculations are currently only able to show results in either physical tonnes of individual pollutants or across pollutants in terms of overall global warming potential.
