@@ -1,0 +1,39 @@
+---
+Source: https://leap.sei.org/help24/IBC/Indoor_Air_Pollution_Modeling.htm
+---
+
+# Indoor Air Pollution Modeling
+
+See also: [The Impact Benefits Calculator (IBC)](Introduction_to_IBC.md)
+
+In addition to modeling the impacts of outdoor (ambient) air pollution through use of the [Impact Benefits Calculator (IBC)](Introduction_to_IBC.md), LEAP can also be used for modeling the health impacts of indoor air pollution (primarily from cooking), taking into account likely levels of exposure among different household members (cooks, other adults, children) and genders (male and female) and examining the likely health benefits of transitions to cleaner cooking technologies.
+
+These capabilities are based on the approach developed in the [HAPIT III tool](https://www.cleancookingalliance.org/resources/450.html) (Household Air Pollution Intervention Tool) developed by the [Clean Cooking Alliance](https://www.cleancookingalliance.org/home/index.html) and to date applied for studying local interventions on clean cooking technologies. The approach in LEAP is also closely aligned with the methods [employed by the WHO](https://www.who.int/airpollution/data/HAP_BoD_methods_May2018.pdf). HAPIT's methods have been adapted for long-term national-scale scenario analysis in LEAP and integrated with the existing ambient air pollution calculations carried out through LEAP's Impact Benefits Calculator (IBC) module.
+
+Modeling of indoor air pollution in LEAP requires defining a model of cooking at the household scale, which accounts for six separate groups of household members: male and female primary cooks, other male and female adults and male and female children.  Each of these variables can be specified as user variables at the same branch where total energy used for cooking is specified, Each is specified with units "people".  Below the cooking branch, you will specify the various alternative cooking technologies currently used in households or which may be used in future years.  You will also need to create a user-variable specifying the daily (24 hr) level of exposure of the primary household cook in units μg/person-year, and specify a value for that exposure associated with each alternative cooking technology.  Bear in mind that these annual average exposures values are intended to represent the total exposure of cooks from all sources including non-cooking related technologies (e.g. kerosene lighting) and ambient levels of exposure.  Thus, even in households using electricity for cooking, primary cooks will have non-zero levels of exposure to particulates.
+
+A separate methodology is used to adjust indoor versus outdoor impacts calculated here to avoid double counting of impacts. Additional text is under development on the methodology used to avoid double counting of indoor/ambient impacts.
+
+The screen shown below shows an example of this type model.  Note the blue colored [user-variables](../16%20-%20Supporting%20Screens/User_Variables.md) used to hold the number of people in each group and the exposure of the primary cook associated with each cooking technology.
+
+![](../assets/images/NewScreens/Asiana1.png)
+
+In your scenarios, you can use the standard Activity Level variable to specify how the penetration of each technology changes over time.  For example here is a screen showing the gradual substitution of traditional cooking stoves with cleaner stoves.
+
+![](../assets/images/NewScreens/Asiana2.png)
+
+The indoor health impact calculations rely on additional data specified within the [Key Assumptions](../21.6%20-%20Wizards%20and%20Properties/Macrovariable_Properties_Wizard.md) section of the tree.  The easiest way to make sure you have all the correct Key Assumption branches is to start from a model based on the included Asiana data set.  You can also choose the Advanced: Check for IBC Compliance option, to have LEAP scan your data set and check that it has the right branches and variables required for indoor and outdoor air pollution health calculations.  This option will add additional branches to your data set if need be. The Key Assumptions data required includes information on baseline populations, baseline disease rates, and information about the households in your area such as the average household size, the number of children (under fives) per household, and the number of male and female members in each group of household members (cooks, other adults and children).
+
+The results of the indoor air pollution calculations appear under a special set of indicator branches disaggregated by gender, age and disease type. Use the Check for IBC Compliance option to ensure that you have the right structure of branches in the Indicators section of the tree.  A special function called IndoorDeaths is used to calculate the deaths for each group of people.  This function is called using the [Call](../18%20-%20Expressions/Call.md) expression: CALL (IndoorDeaths), with the same expression specified at every relevant indicator branch.  Use the Advanced: [Edit Functions](../21.1%20-%20API/Functions_Editor.md) option to view and access the functions in your area.  Functions for each area are stored in a file named functions.vbs in the Area folder (see below). This is a file containing scripts written in the VBScript (Visual Basic) programming language.  If your copy of functions.vbs does not contain the IndoorDeaths function, you may need to copy the functions.vbs file from the Asiana area folder into your Area folder.
+
+![](../assets/images/NewScreens/Functions%20Script%20Editor.png)
+
+The CALL(IndoorDeaths) function calculates different numbers of deaths for each branch representing different genders, age groups and diseases (ALRI, COPD, Heart Disease, Stroke, Lung Cancer).  To do this it make use of LEAP's [Application Programming Interface (API)](../21.1%20-%20API/API.md) to understand the context from which it was called (the branch, variable, region, scenario and year).  To see how this works, look in the functions.vbs file for the LEAP.ScriptContextBranch and similar API calls.  The function then calculates premature mortality values based on the characteristics of each household group and relative risk functions derived from the [Global Burden of Disease](http://www.healthdata.org/gbd) study (>Cohen et al., 2017 and/or Burnett et al., 2014), which are built into LEAP and accessed using a call to LEAP's API.  To see this part of the calculation look for the call to the LEAP.PollutionRelRiskMean LEAP API function.  If your branch and variable structure differs from the one used in Asiana then you may need to edit the IndoorDeaths function.
+
+The results of the calculation are shown alongside those for ambient air pollution, which are [calculated in IBC](Introduction_to_IBC.md).  Below is an example result, showing indoor and ambient pollution together.
+
+![](../assets/images/IBC/Mort4.png)
+
+Avoiding Double-Counting of Impacts from Indoor and Outdoor (Ambient) Air Pollution
+
+Household and ambient air pollution are two overlapping risk factors for premature mortality. For example, residents in households cooking using solid fuels, exposed to high levels of household air pollution may also be exposed to high levels of ambient air pollution. This is certainly the case in countries where a high proportion of the population cook using solid fuels, and where outdoor PM2.5 concentrations are many times higher than the WHO ambient air quality guideline for the protection of human health.  Within the LEAP-IBC platform, overall health impacts from household and ambient PM2.5 exposure can be estimated using the approach outlined in Ezzati et al. (2003).

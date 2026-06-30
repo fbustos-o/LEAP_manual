@@ -1,0 +1,11 @@
+---
+Source: https://leap.sei.org/help24/Transformation/Peak_Load_Ratio.htm
+---
+
+# Peak Load Ratio
+
+See also: [Analysis View](../02%20-%20Views/Data_View.md), [Transformation Analysis](Transformation.md), [System Load Shape](../06%20-%20Load%20Shapes/System_Load_Shape.md), [Yearly Shapes](../16%20-%20Supporting%20Screens/Load_Shapes.md), [Time Slices](../16%20-%20Supporting%20Screens/Time_Slices.md), [YearlyShape Function](../18%20-%20Expressions/YearlyShape.md)
+
+The Peak Load Ratio variable is specified for each Transformation module.  It reflects the ratio of the peak implied by the simplified time-sliced load shape as specified in the [System Load](../06%20-%20Load%20Shapes/System_Load_Shape.md) Shape variable, versus the actual peak load on a system.  Time slice configurations used in LEAP reflect some degree of averaging of how the actual load on a system varies. For example they may miss some seasonal variations or some hourly variations in load.  This variable allows you to adjust for this loss of fidelity and so more accurately reflect actual and likely future system peak loads. The values are used in LEAP's calculations to more accurately calculate and report on the [system peak load,](../17%20-%20Results%20Categories/Peak_Power.md) which in turn is used in calculating the [reserve margin](../17%20-%20Results%20Categories/Reserve_Margin.md) (and thus will affect how much capacity is built as controlled by the [Planning Reserve Margin](Planning_Reserve_Margin.md) variable.
+
+The value for the Peak Load Ratio should always be between 0% and 100%.  You can either enter values exogenously or take them from values that accompany different [Yearly Shapes](../16%20-%20Supporting%20Screens/Load_Shapes.md).  Use the PeakLoadRatioFromYearlyShape function to link to the values associated with yearly shapes. Click on the orange button (![](../assets/images/NewButtons/Exp%20Button.png)) attached to the expression to Peak Load Ratio expression to  quickly select one of the stored yearly shapes in an area.
