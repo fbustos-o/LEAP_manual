@@ -1,0 +1,26 @@
+---
+Source: https://leap.sei.org/help24/Concepts/Getting_Started.htm
+---
+
+# Getting Started
+
+See also: [Introduction](Introduction.md), [Credits](Credits.md), [History](History_of_LEAP.md)
+
+Welcome to LEAP, the Low Emissions Analysis Platform, a widely-used software tool for energy policy, climate change mitigation and air pollution abatement planning developed at the [Stockholm Environment Institute (SEI)](http://https://www.sei.org).
+
+These help files contain comprehensive information on using LEAP. To get started, we suggest you familiarize yourself with some of the following major concepts:
+
+* **Help:** Use the Help menu to get access to LEAP's on-line documentation (help is organized using an index, a table of contents and can also be searched). In addition, you can press the F1 function key to get context-sensitive help anywhere in LEAP. Pressing F1 will give you a page of help relevant to the screen you are working on. More information on [using the help system here](../22%20-%20Technical%20Support/Using_the_Online_Help.md).
+* **Views:** LEAP is structured as different "views" of an energy system or "Area". These views are listed as graphical icons on the [View Bar](../02%20-%20Views/View_Bar.md), normally located on the left of the screen.
+* **Types of Analysis:** You can conduct a variety of analyses of energy systems using LEAP, including [Demand Analysis](../05%20-%20Demand/Demand.md), [Transformation Analysis](../08%20-%20Transformation/Transformation.md), Resource Analysis, and Environmental Analysis. All of these analyses can be combined together in LEAP to conduct integrated energy planning, climate mitigation analyses, and air pollution abatement planning.
+* **Data Structures:** The main Demand, Transformation, Resource and Non-Energy sector data structures in a LEAP area are organized using a [hierarchical tree](../03%20-%20Interface/TreeOverview.md). Different [types of branches](../03%20-%20Interface/Types_of_Tree_Branches.md) in the tree are represented as different icons (pictures). The types of data entered at each branchAn item on the tree. Different types of branches are represented by different icons on the tree depend on the type of branch, its position in the tree (for example whether it is a Demand or Transformation branch), and the properties (![](../assets/images/NewButtons/Properties.png)) you set for that branch. In addition to the tree, a number of cross-cutting supporting databases are also employed including the [Fuels](../16%20-%20Supporting%20Screens/Fuels.md), [Effects](../16%20-%20Supporting%20Screens/Effects_Screen.md), [Units,](../16%20-%20Supporting%20Screens/Units.md) [Regions](../16%20-%20Supporting%20Screens/Regions.md), [Scenarios](../16%20-%20Supporting%20Screens/Scenario_Manager.md), [Tags](../15%20-%20Tagging%20Branches/Manage_Tags.md), and [References](../16%20-%20Supporting%20Screens/Refrences_Screen.md) databases.
+* **Scenario analysis** is at the heart of using LEAP. [Scenarios](Scenarios.md) are self-consistent story-lines of how a future energy system might evolve over time in a particular demographic and socio-economic setting and under a particular set of policy conditions.
+* **User Interface:** The main screen of the LEAP system consists of the [View Bar](../02%20-%20Views/View_Bar.md) on the left of the screen, a [main menu](../03%20-%20Interface/Menu.md) and [main toolbar](../03%20-%20Interface/Main_Toolbar.md) at the top providing access to the most important functions of the program, and a status bar a the bottom of the screen showing the current area name, current view, licensing information and other status information. The layout of the rest of the screen will depend on which view is selected. LEAP fully supports both standard definition and high definition screens and you can even use the View:Theme menu option to switch between different light and dark colored themes. To work efficiently with LEAP, we recommend you study and/or printout the list of [keyboard shortcuts](../22%20-%20Technical%20Support/Keyboard_Shortcuts.md) you can use in LEAP.
+* **Technology Database:** LEAP includes TED: the [Technology and Environmental Database.](../21.3%20-%20TED/TED_Intro.md) TED contains information describing the technical characteristics, costs and environmental impacts of energy technologies.
+* **Additional Information** is available on the [hardware and software requirements](../22%20-%20Technical%20Support/Hardware_Requirements.md) for using LEAP, and on obtaining [technical support](../22%20-%20Technical%20Support/Technical_Support.md).  
+    
+  ![](../assets/images/NewButtons/LEAP.png)Refer to the [LEAP web site](https://leap.sei.org/) for additional information on licensing and using LEAP.   
+    
+  ![](../assets/images/NewButtons/linkedin%40128px.png) Additional information and resources are available on the the [LEAP LinkedIn group](https://leap.sei.org/LinkedIn)  
+    
+  ![](../assets/images/NewButtons/youtube%40128px.png) Numerous training videos for LEAP are available on the [LEAP YouTube channel](https://leap.sei.org/Youtube).

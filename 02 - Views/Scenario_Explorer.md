@@ -1,0 +1,26 @@
+---
+Source: https://leap.sei.org/help24/Views/Scenario_Explorer.htm
+---
+
+# The Scenario Explorer
+
+Menu Option: View: Overviews  
+See also: [Overviews](Overviews_View.md), [Overview Manager](../16%20-%20Supporting%20Screens/Overview_Manager.md)
+
+![](../assets/images/NewScreens/ScenarioExplorer.png)
+
+The Scenario Explorer is the top panel of the [Overviews](Overviews_View.md) View.  It can be shown or hidden by clicking the Scenario Explorer button (**![](../assets/images/NewButtons/ScenarioExplorer.png)**) on the Overviews toolbar.  Each color-coded row of the Scenario Explorer corresponds to a particular scenario, while each column corresponds to a particular [Key Parameter](../16%20-%20Supporting%20Screens/Scenario_Template.md).  The Scenario Explorer is designed to let you quickly explore the impact that changing Key Parameters has on the results of your scenarios, which are displayed in the favorite charts shown in the lower part of the Overview screen.
+
+The values of the multiple Key Parameters are shown using "slider bars" (see above).  You can adjust the values of the parameters in any given scenario by pulling on these slider controls.  LEAP will then automatically recalculate any affected scenarios immediately (if the Auto Refresh button is checked On).  For more complex data sets or in cases where users wish to adjust the values of multiple sliders, you can switch off the Auto Refresh feature and instigate a calculation by clicking the Refresh button.
+
+Each [Key Parameter](../16%20-%20Supporting%20Screens/Scenario_Template.md) displayed in the Scenario Explorer is connected to a particular branch, variable and region in your LEAP data set. Key Parameters are typically linked to [Key Assumption](../21.6%20-%20Wizards%20and%20Properties/Macrovariable_Properties_Wizard.md) branches in your model but can also be linked to any other branch or variable in a data set. Right-click on a Key Parameter and select [Edit](../16%20-%20Supporting%20Screens/Scenario_Template.md) (**![](../assets/images/NewButtons/Properties.png)**) ) to specify the branch, variable and region where the Key Parameter is defined as well as the minimum and maximum allowable values for the parameter, and the labels to be displayed in the Scenario Explorer.  You can also use this approach to Add (**![](../assets/images/NewButtons/Add.png)**), Delete (**![](../assets/images/NewButtons/Delete.png)**), and reorder the Key Parameters in the Scenario Explorer.
+
+Using the Scenario Explorer you can also create new scenarios and show or hide existing scenarios without having to exit the Overviews view.  To do this, right-click in the left-hand column of the scenario explorer on one of the scenario names.  You can then Create a New Scenario based on an existing scenario, show one of the existing (but previously hidden) scenarios, or hide one of scenarios currently shown in the Scenario Explorer.  You can also lock a scenario so that you don't accidentally change its Key Parameter values in the Scenario Explorer.  The slider controls will be disabled for any locked scenarios.
+
+Use the Tags filter in the main toolbar to display a filtered subset of key parameters in the Scenario Explorer. You can add a tag by pressing the **![](../assets/images/NewButtons/tag.png)** Tag button and selecting **![](../assets/images/NewButtons/Add.png)** Add, or delete a tag using the **![](../assets/images/NewButtons/Delete.png)** Delete button If you specify more than one tag, the filter can be set to combine them to show results based on the presence of any (a or b or c) or all (a and b and c) tags.  Click the filter button to switch the filter on or off.
+
+### Additional Scenarios
+
+In addition to editing scenarios by pulling on the slider controls affecting individual Key Parameters, you can also quickly adjust scenarios that are constructed as a package of other "mini-scenarios", by quickly switching on or off those scenarios.  This feature takes advantage of the multiple inheritance feature in LEAP, that allows one scenario to inherit its expressions from multiple additional scenarios.  For example, you might have five individual "mini scenarios" exploring the role of heating and lighting efficiency, building insulation, fuel switching and renewable energy, which are then combined to form an overall climate mitigation scenario.  This multiple inheritance is normally specified in the [Manage Scenarios](../16%20-%20Supporting%20Screens/Scenario_Manager.md) screen.  In the Additional Scenarios Column of the Scenario Explorer, you can quickly and interactively explore the impact of switching these mini scenario on and off.  To do this click one of the buttons in the Additional Scenarios column and adjust the check marks next to each additional (mini) scenario as shown here on the right.
+
+You can show or hide the Additional Scenarios feature, by right-clicking in one of the Scenario Explorer columns and choosing the Additional Scenarios option.
