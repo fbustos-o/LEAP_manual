@@ -97,6 +97,7 @@ Single sheet named `Export`.
    - branches in scope with no Multinode counterpart (new to Multinode) — will be adopted;
    - Multinode nodes with no LEAP branch — routed to the Structure Channel backlog (§6);
    - device leaves with fuels not found in the dictionary — blocking;
+   - fuels with non-zero ESTO targets for the session economy/flow not covered by any bound leaf — blocking (target-fuel coverage check);
    - unit findings, driver conflicts, scenario list.
 10. **Keep the original workbook** (bytes) attached to the session; the Value Writer re-opens *this* file, never regenerates it.
 

@@ -52,22 +52,40 @@ All artifacts, code, UI text, and logs in **professional English** (project deci
 2. In the leaf's Properties select its **Fuel** (typing the first letters autocompletes; LEAP offers the fuel name as branch name). Leave data values empty/default — multinode fills them later.
 3. Two siblings may share the same fuel (`Electricity` and `Electricity HP` both consume Electricity; they differ by the efficiency multinode writes).
 4. Do not rename or move existing branches.
-5. Repeat per the superset table below (53 leaves total: 22 × Urban + 22 × Rural + 9 under Others_Unspecified).
+5. Repeat per the superset matrix below. The leaf count depends on the coverage tier chosen (Core ≈ 53 leaves, sized for 20USA; Full APEC coverage ≈ 120).
 6. Export with the **same options as v2**: from `Demand\Buildings`, all scenarios, all variables, multi-year columns, 8 levels, autofilter → save as `Test_LEAP_v3.xlsx`.
 
-Superset table (branch name → LEAP fuel from the dictionary):
+**Fuel coverage across economies (making the generic area truly generic):** the Core tier below is sized for the 20USA residential dataset; other APEC economies bring additional buildings fuels (district heat in China/Korea, fuelwood and charcoal in South-East Asia, town gas in Hong Kong, coal and briquettes, biogas, etc.). Three complementary safeguards guarantee no fuel is ever left out:
 
-| End-use (create under Urban AND Rural) | Leaves (fuel) |
-|---|---|
-| Space Heating (7) | Electricity→Electricity, Electricity HP→Electricity, Natural Gas→Natural gas, LPG→LPG, Kerosene→Kerosene, Other Biomass→Other biomass, Gas and Diesel Oil→Gas and diesel oil |
-| Space Cooling (1) | Electricity HP→Electricity |
-| Water Heating (6) | Electricity, Natural Gas, LPG, Kerosene, Gas and Diesel Oil, Solar→Solar nonspecified |
-| Cooking (3) | Electricity, Natural Gas, LPG |
-| Lighting (1) | Electricity |
-| Appliances (4) | Electricity, Natural Gas, LPG, Kerosene |
-| Others_Unspecified (9, once) | Gas and Diesel Oil, Natural Gas, Geothermal, Solar→Solar nonspecified, Other Biomass, Biodiesel, Electricity, Kerosene, LPG |
+1. **Derive the definitive buildings fuel list from the APEC database** (one-time, run locally by the user): the union of products with non-zero consumption in flows `16.02 Residential` and `16.01 Commercial and public services` across ALL economies and years of `00APEC_2024_low.csv`. Suggested snippet (adjust column names to the actual CSV header):
 
-**Quick check on the exported v3:** ~53 new level-6 branch paths; each has `Fuel Share` + `Efficiency` rows in both scenarios; all v2 rows still present. **The user sends v3 for review before handing it to the agent** — it closes spec open item §9-1 (real device-row variable pattern, e.g. the exact Useful Energy Intensity denominator); the plan/spec are corrected if LEAP's actual output differs from the predicted pattern.
+   ```python
+   import pandas as pd
+   df = pd.read_csv("back-end/data/00APEC_2024_low.csv")
+   flows = ["16.02 Residential", "16.01 Commercial and public services"]
+   m = df["<flow_col>"].isin(flows) & (df["<value_col>"] != 0)
+   print(sorted(df.loc[m, "<product_col>"].unique()))
+   ```
+
+   Every product in that union must exist as a leaf **at least under `Others_Unspecified`**, and under each end-use where it is plausible.
+2. **`Others_Unspecified` is the catch-all:** it must contain a leaf for EVERY fuel of the union list. A fuel with no plausible end-use device still has a guaranteed landing row there, so the balance never silently drops energy.
+3. **Automatic coverage check in multinode (Stage 4):** on template import, every fuel with a non-zero ESTO target for the selected economy/flow must resolve (via the dictionary) to at least one bound leaf; uncovered fuels are blocking findings and Stage 9 refuses to export while they remain. This is the programmatic guarantee, independent of how complete the manual superset is.
+
+Superset matrix (branch name → LEAP fuel from the dictionary). Core = always create; Extended = add for full APEC coverage (final list frozen after the union query above):
+
+| End-use (under Urban AND Rural) | Core | Extended |
+|---|---|---|
+| Space Heating | Electricity, Electricity HP→Electricity, Natural Gas, LPG, Kerosene, Other Biomass, Gas and Diesel Oil | District Heat→Heat, Town Gas→Gas works gas, Fuel Oil, Coal→Coal nonspecified, Briquettes→BKB and PB, Fuelwood→Fuelwood and woodwaste, Charcoal, Biogas, Geothermal, Solar→Solar nonspecified |
+| Space Cooling | Electricity HP→Electricity | District Heat→Heat, Natural Gas (absorption chillers) |
+| Water Heating | Electricity, Natural Gas, LPG, Kerosene, Gas and Diesel Oil, Solar→Solar nonspecified | District Heat→Heat, Town Gas→Gas works gas, Fuel Oil, Fuelwood→Fuelwood and woodwaste, Charcoal, Other Biomass, Biogas, Coal→Coal nonspecified, Geothermal |
+| Cooking | Electricity, Natural Gas, LPG | Kerosene, Town Gas→Gas works gas, Fuelwood→Fuelwood and woodwaste, Charcoal, Other Biomass, Biogas, Coal→Coal nonspecified |
+| Lighting | Electricity | Kerosene |
+| Appliances | Electricity, Natural Gas, LPG, Kerosene | — |
+| Others_Unspecified (once) | ALL fuels of the derived union list (catch-all) | — |
+
+**LEAP Fuels database prerequisite:** before creating leaves, verify every LEAP fuel name used above exists in `General: Fuels` (Show: All Fuels). The default IEA-based list covers most; add missing ones once with the Add button.
+
+**Quick check on the exported v3:** one new level-6 branch path per created leaf; each has `Fuel Share` + `Efficiency` rows in both scenarios; all v2 rows still present. **The user sends v3 for review before handing it to the agent** — it closes spec open item §9-1 (real device-row variable pattern, e.g. the exact Useful Energy Intensity denominator); the plan/spec are corrected if LEAP's actual output differs from the predicted pattern.
 
 Stages 0–8 proceed against v2; Stage 9 tests are written against v3 and marked skipped until the file is provided.
 
@@ -108,7 +126,7 @@ Stages 0–8 proceed against v2; Stage 9 tests are written against v3 and marked
 1. `POST /leap/import-template` (multipart) in `api/routers.py` + schemas: stores template bytes + parse result in session state (SQLite, keyed to user/session like v10 save files).
 2. Build/merge the multinode tree from template branch paths (scope-filtered by the session's economy/sector via the dictionary root path). Each node gets `leap_binding = {branch_id, rows:[{variable, scenario_id, region_id, row_index}]}` persisted in the save-file format (backward compatible: old saves without bindings still load).
 3. Economy check: area name must start with the session economy code (e.g. `20USA`) else return a warning flag the UI must surface (non-blocking, per D2).
-4. Return a **reconciliation report**: branches adopted, multinode-only nodes (no LEAP row — will not be exportable), device leaves missing (expected until superset exists), unit findings, driver conflicts.
+4. Return a **reconciliation report**: branches adopted, multinode-only nodes (no LEAP row — will not be exportable), device leaves missing (expected until superset exists), unit findings, driver conflicts, and a **target-fuel coverage check**: every fuel with a non-zero ESTO target for the session economy/flow must map (via the dictionary) to at least one bound device leaf — uncovered fuels are blocking findings (they mean the generic LEAP area lacks a leaf and that energy would be silently dropped).
 5. **User Verification Checklist:** `pytest tests/test_import_endpoint.py -q` green — upload v2 fixture in a `20USA`/`16.02 Residential` session; 12 end-uses bound, report lists zero device bindings, warning on area name (`FBO_6_Test_Building` doesn't start with `20USA`).
 
 ### Stage 5 — Frontend pre-load flow
@@ -141,7 +159,7 @@ Stages 0–8 proceed against v2; Stage 9 tests are written against v3 and marked
    - REF end-use `Useful Energy Intensity` (each milestone year incl. horizon): Σ_leaves (final_pj × efficiency) ÷ activity.
    - Device rows (only if bound, i.e. v3 template): `Fuel Share` = leaf share of end-use final energy ×100; `Efficiency` = efficiency ×100; absent-fuel leaves get explicit 0 share.
    - Clear non-milestone year cells in every written row; `Method = Interp`; round to 6 significant digits; write numbers not strings.
-3. `POST /leap/export-values` returns the file, named `<area>_<economy>_<sector>_<timestamp>.xlsx`; `?dry_run=true` returns the change list (row, column, old, new) for a UI review screen. Refuse to export if the session fingerprint ≠ template fingerprint (P4: same-area guarantee).
+3. `POST /leap/export-values` returns the file, named `<area>_<economy>_<sector>_<timestamp>.xlsx`; `?dry_run=true` returns the change list (row, column, old, new) for a UI review screen. Refuse to export if the session fingerprint ≠ template fingerprint (P4: same-area guarantee) or while target-fuel coverage findings from Stage 4 remain unresolved.
 4. Frontend: "Export to LEAP (filled template)" button + dry-run review modal.
 5. **User Verification Checklist:**
    - `pytest tests/test_leap_writer.py -q` green:
