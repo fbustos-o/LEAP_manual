@@ -45,19 +45,31 @@ All artifacts, code, UI text, and logs in **professional English** (project deci
 
 ## USER PREREQUISITE (manual, in LEAP — before Stage 9 can be end-to-end tested)
 
-In the generic area, under **every** end-use, create the superset technology leaves (Useful Energy methodology; each leaf = Technology branch with its LEAP fuel):
+**What `Test_LEAP_v3.xlsx` is:** the next *Export to Excel* of the **same area** (`FBO_6_Test_Building`) taken **after** the user manually creates the superset device/fuel leaves under every end-use. It is produced by LEAP, not authored by hand. v2 ends at end-use branches; v3 additionally contains, for every device leaf, `Fuel Share` and `Efficiency` rows (each with its own `BranchID`) in both scenarios — the rows the Value Writer needs as targets and the Stage 9 tests need as fixture.
 
-| End-use | Leaves (fuel) |
+**Build procedure (in LEAP, same area — never a new area, or all IDs change):**
+1. Select an end-use (green Useful Energy category, e.g. `Urban\Space Heating`) → right-click → Add → **Technology** branch (green). Because the parent is useful-energy enabled, LEAP exposes `Efficiency` and `Fuel Share` on the leaf automatically.
+2. In the leaf's Properties select its **Fuel** (typing the first letters autocompletes; LEAP offers the fuel name as branch name). Leave data values empty/default — multinode fills them later.
+3. Two siblings may share the same fuel (`Electricity` and `Electricity HP` both consume Electricity; they differ by the efficiency multinode writes).
+4. Do not rename or move existing branches.
+5. Repeat per the superset table below (53 leaves total: 22 × Urban + 22 × Rural + 9 under Others_Unspecified).
+6. Export with the **same options as v2**: from `Demand\Buildings`, all scenarios, all variables, multi-year columns, 8 levels, autofilter → save as `Test_LEAP_v3.xlsx`.
+
+Superset table (branch name → LEAP fuel from the dictionary):
+
+| End-use (create under Urban AND Rural) | Leaves (fuel) |
 |---|---|
-| Space Heating | Electricity, Electricity HP (Electricity), Natural Gas, LPG, Kerosene, Other Biomass, Gas and Diesel Oil |
-| Space Cooling | Electricity HP (Electricity) |
-| Water Heating | Electricity, Natural Gas, LPG, Kerosene, Gas and Diesel Oil, Solar Nonspecified |
-| Cooking | Electricity, Natural Gas, LPG |
-| Lighting | Electricity |
-| Appliances | Electricity, Natural Gas, LPG, Kerosene |
-| Others_Unspecified | Gas and Diesel Oil, Natural Gas, Geothermal, Solar Nonspecified, Other Biomass, Biodiesel, Electricity, Kerosene, LPG |
+| Space Heating (7) | Electricity→Electricity, Electricity HP→Electricity, Natural Gas→Natural gas, LPG→LPG, Kerosene→Kerosene, Other Biomass→Other biomass, Gas and Diesel Oil→Gas and diesel oil |
+| Space Cooling (1) | Electricity HP→Electricity |
+| Water Heating (6) | Electricity, Natural Gas, LPG, Kerosene, Gas and Diesel Oil, Solar→Solar nonspecified |
+| Cooking (3) | Electricity, Natural Gas, LPG |
+| Lighting (1) | Electricity |
+| Appliances (4) | Electricity, Natural Gas, LPG, Kerosene |
+| Others_Unspecified (9, once) | Gas and Diesel Oil, Natural Gas, Geothermal, Solar→Solar nonspecified, Other Biomass, Biodiesel, Electricity, Kerosene, LPG |
 
-Then `Analysis: Export to Excel` (all scenarios, all variables, multi-year columns, 8 levels) → produces **`Test_LEAP_v3.xlsx`** = the fixture with `Fuel Share`/`Efficiency` rows. Stages 0–8 proceed against v2; Stage 9 tests are written against v3 and marked skipped until the file is provided.
+**Quick check on the exported v3:** ~53 new level-6 branch paths; each has `Fuel Share` + `Efficiency` rows in both scenarios; all v2 rows still present. **The user sends v3 for review before handing it to the agent** — it closes spec open item §9-1 (real device-row variable pattern, e.g. the exact Useful Energy Intensity denominator); the plan/spec are corrected if LEAP's actual output differs from the predicted pattern.
+
+Stages 0–8 proceed against v2; Stage 9 tests are written against v3 and marked skipped until the file is provided.
 
 ---
 
