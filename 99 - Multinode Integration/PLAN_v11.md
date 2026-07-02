@@ -55,33 +55,36 @@ All artifacts, code, UI text, and logs in **professional English** (project deci
 5. Repeat per the superset matrix below. The leaf count depends on the coverage tier chosen (Core ≈ 53 leaves, sized for 20USA; Full APEC coverage ≈ 120).
 6. Export with the **same options as v2**: from `Demand\Buildings`, all scenarios, all variables, multi-year columns, 8 levels, autofilter → save as `Test_LEAP_v3.xlsx`.
 
-**Fuel coverage across economies (making the generic area truly generic):** the Core tier below is sized for the 20USA residential dataset; other APEC economies bring additional buildings fuels (district heat in China/Korea, fuelwood and charcoal in South-East Asia, town gas in Hong Kong, coal and briquettes, biogas, etc.). Three complementary safeguards guarantee no fuel is ever left out:
+**Fuel coverage across economies — DEFINITIVE LIST (frozen 2026-07 from `00APEC_2024_low.csv`):** the union of products with non-zero consumption in flows `16.02 Residential` and `16.01 Commercial and public services` across all 21 APEC economies. Detail codes are always present wherever an aggregate is non-zero (verified), so leaves are created at detail level only. Recent union (2015–2022) = **36 fuels**; 7 more appear only pre-2015 and are skipped (base year is 2022).
 
-1. **Derive the definitive buildings fuel list from the APEC database** (one-time, run locally by the user): the union of products with non-zero consumption in flows `16.02 Residential` and `16.01 Commercial and public services` across ALL economies and years of `00APEC_2024_low.csv`. Suggested snippet (adjust column names to the actual CSV header):
+Recent-union fuels, by number of economies using them 2015+ (ESTO code → LEAP name):
 
-   ```python
-   import pandas as pd
-   df = pd.read_csv("back-end/data/00APEC_2024_low.csv")
-   flows = ["16.02 Residential", "16.01 Commercial and public services"]
-   m = df["<flow_col>"].isin(flows) & (df["<value_col>"] != 0)
-   print(sorted(df.loc[m, "<product_col>"].unique()))
-   ```
+- Universal (≥13 econ.): `17` Electricity (21), `07.09` LPG (21), `07.07` Gas and diesel oil (18), `08.01` Natural gas (18), `07.06` Kerosene (17), `15.05` Other biomass (14), `07.08` Fuel oil (13)
+- Common (5–12): `12.99` Solar nonspecified (11), `16.01` Biogas (9), `15.03` Charcoal (9), `01.02` Other bituminous coal (8), `18` Heat (8), `07.01` Motor gasoline (7), `16.06` Biodiesel (6), `15.01` Fuelwood and woodwaste (5)
+- Rare (1–4): `07.05` Kerosene type jet fuel, `11` Geothermal, `01.05` Lignite, `08.03` Gas works gas, `01.04` Anthracite, `02.01` Coke oven coke, `16.02` Industrial waste, `01.03` Sub bituminous coal, `02.08` BKB and PB, `07.02` Aviation gasoline, `02.03` Coke oven gas, `02.07` Coal tar, `06.01` Crude oil, `16.03`/`16.04` Municipal solid waste (ren./non-ren.), `16.05` Biogasoline, `07.17` Other products, `02.05` Other recovered gases, `02.06` Patent fuel, `15.02` Bagasse, `01.01` Coking coal
+- Historical only (pre-2015, skip): `07.10` Refinery gas, `07.03` Naphtha, `03` Peat, `04` Peat products, `07.04` Gasoline type jet fuel, `06.02` Natural gas liquids, `16.08` Other liquid biofuels
 
-   Every product in that union must exist as a leaf **at least under `Others_Unspecified`**, and under each end-use where it is plausible.
-2. **`Others_Unspecified` is the catch-all:** it must contain a leaf for EVERY fuel of the union list. A fuel with no plausible end-use device still has a guaranteed landing row there, so the balance never silently drops energy.
-3. **Automatic coverage check in multinode (Stage 4):** on template import, every fuel with a non-zero ESTO target for the selected economy/flow must resolve (via the dictionary) to at least one bound leaf; uncovered fuels are blocking findings and Stage 9 refuses to export while they remain. This is the programmatic guarantee, independent of how complete the manual superset is.
+Three complementary safeguards guarantee no fuel is ever left out:
 
-Superset matrix (branch name → LEAP fuel from the dictionary). Core = always create; Extended = add for full APEC coverage (final list frozen after the union query above):
+1. **End-use leaves** carry the plausible/widespread fuels (matrix below).
+2. **`Others_Unspecified` is the catch-all:** it gets a leaf for **all 36 recent-union fuels**. Any fuel without a plausible end-use device (jet kerosene in commercial, crude oil, MSW, coal by-products…) still has a guaranteed landing row, so the balance never silently drops energy.
+3. **Automatic coverage check in multinode (Stage 4):** every fuel with a non-zero ESTO target for the selected economy/flow must resolve to at least one bound leaf; uncovered fuels are blocking findings and Stage 9 refuses to export while they remain.
 
-| End-use (under Urban AND Rural) | Core | Extended |
-|---|---|---|
-| Space Heating | Electricity, Electricity HP→Electricity, Natural Gas, LPG, Kerosene, Other Biomass, Gas and Diesel Oil | District Heat→Heat, Town Gas→Gas works gas, Fuel Oil, Coal→Coal nonspecified, Briquettes→BKB and PB, Fuelwood→Fuelwood and woodwaste, Charcoal, Biogas, Geothermal, Solar→Solar nonspecified |
-| Space Cooling | Electricity HP→Electricity | District Heat→Heat, Natural Gas (absorption chillers) |
-| Water Heating | Electricity, Natural Gas, LPG, Kerosene, Gas and Diesel Oil, Solar→Solar nonspecified | District Heat→Heat, Town Gas→Gas works gas, Fuel Oil, Fuelwood→Fuelwood and woodwaste, Charcoal, Other Biomass, Biogas, Coal→Coal nonspecified, Geothermal |
-| Cooking | Electricity, Natural Gas, LPG | Kerosene, Town Gas→Gas works gas, Fuelwood→Fuelwood and woodwaste, Charcoal, Other Biomass, Biogas, Coal→Coal nonspecified |
-| Lighting | Electricity | Kerosene |
-| Appliances | Electricity, Natural Gas, LPG, Kerosene | — |
-| Others_Unspecified (once) | ALL fuels of the derived union list (catch-all) | — |
+**Maintenance rule (ESTO data changes yearly; new fuels may appear):** when a future database release brings a fuel not in this list, the coverage check flags it on import. Response: add the name mapping to the dictionary if missing, add ONE leaf under `Others_Unspecified` in the generic LEAP area (plus end-use leaves if plausible), re-export the template. No code changes needed.
+
+Superset matrix (branch name → LEAP fuel). Under Urban AND Rural:
+
+| End-use | Leaves |
+|---|---|
+| Space Heating (16) | Electricity, Electricity HP→Electricity, Natural Gas, LPG, Kerosene, Gas and Diesel Oil, Fuel Oil, District Heat→Heat, Coal→Other bituminous coal, Fuelwood→Fuelwood and woodwaste, Charcoal, Other Biomass, Biogas, Geothermal, Solar→Solar nonspecified, Town Gas→Gas works gas |
+| Space Cooling (2) | Electricity HP→Electricity, District Heat→Heat |
+| Water Heating (15) | Electricity, Natural Gas, LPG, Kerosene, Gas and Diesel Oil, Fuel Oil, District Heat→Heat, Solar→Solar nonspecified, Fuelwood→Fuelwood and woodwaste, Charcoal, Other Biomass, Biogas, Coal→Other bituminous coal, Town Gas→Gas works gas, Geothermal |
+| Cooking (10) | Electricity, Natural Gas, LPG, Kerosene, Fuelwood→Fuelwood and woodwaste, Charcoal, Other Biomass, Biogas, Coal→Other bituminous coal, Town Gas→Gas works gas |
+| Lighting (2) | Electricity, Kerosene |
+| Appliances (4) | Electricity, Natural Gas, LPG, Kerosene |
+| **Others_Unspecified (36, once)** | one leaf per recent-union fuel (full list above; includes the coal family detail, MSW, jet fuels, crude oil, by-product gases, etc.) |
+
+Totals: 49 leaves × 2 groups + 36 = **134 leaves**. Coal detail (Anthracite, Lignite, Sub-bituminous, Coking coal, coke/briquette by-products) lives only under `Others_Unspecified`; end-uses use `Other bituminous coal` as the representative coal device — per-fuel balance for the other coal types is still guaranteed by the catch-all.
 
 **LEAP Fuels database prerequisite:** before creating leaves, verify every LEAP fuel name used above exists in `General: Fuels` (Show: All Fuels). The default IEA-based list covers most; add missing ones once with the Add button.
 
