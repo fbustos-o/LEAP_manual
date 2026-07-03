@@ -18,11 +18,14 @@
 4. **Unit audit scope:** `Petajoule` is enforced ONLY on rows the writer targets (end-use `Final Energy Intensity` / `Useful Energy Intensity`). Confirmed: all end-use rows in v3 are PJ; the 748 GJ device placeholders must not block anything.
 5. **Whole-area exports:** the file has ~30,000 rows including Transformation and Resources branches. The branch-path scope filter must discard them efficiently; parsing must stay well under a few seconds. Unknown variables (`Demand Cost`, `Total Final Energy Consumption`, `Total Activity` on leaves, `IPCC GWP Values`, etc.) are ignored via the variable whitelist.
 
+6. **Output trimming (NEW rule — replaces "preserve row order" on the OUTPUT file):** the exported workbook returned to the user contains ONLY the rows the writer actually wrote (header rows 1–3 and each written row's columns A–D preserved verbatim). All unwritten rows — `Target` scenario, non-selected regions, `Load Shape`, result/cost variables, out-of-scope branches — are removed from the output copy. Rationale: LEAP's import processes every remaining contiguous row; stale exported rows (e.g. `Target` rows carrying explicit 0s, or old values in unwritten variables) would otherwise be re-imported and could pin the Target scenario to zero or overwrite LEAP-side edits. LEAP explicitly supports row deletion ("You can safely delete rows... LEAP simply imports any remaining contiguous rows"). The in-memory template keeps all rows (it remains the binding source); trimming happens only when producing the output bytes.
+
 ## 3. Tests to add before declaring Stage 9 complete
 - Activity-share conversion: for a synthetic end-use with known finals and efficiencies, written scenario `Activity Level` shares sum to 100 (±1e-6) and match hand-computed values.
 - Region isolation: filling values for RegionID 1 leaves every RegionID 2 cell byte-identical.
 - Scenario dynamism: writer resolves the target scenario by name from the parsed file (test with `Reference`), and refuses an unknown scenario name with a clear error.
-- Preservation test re-run against v3 (374 leaves, 3 scenarios, 2 regions, 39 year columns).
+- Preservation test re-run against v3 (374 leaves, 3 scenarios, 2 regions, 39 year columns), amended for trimming: every row present in the output was written by the writer; its A–D cells are byte-identical to the input; no `Target` or non-selected-region row survives in the output.
+- Trimming safety: output row count == number of written rows; importing-side sanity = header row 3 intact and rows contiguous from row 4.
 
 ## 4. Updated Stage 9 User Verification Checklist (output this when done)
 - `pytest tests/test_leap_writer.py -q` green, including the previously skipped device-level tests (state expected test count).

@@ -44,6 +44,7 @@ All artifacts, code, UI text, and logs in **professional English** (project deci
 - Driver detection from `Units` of end-use `Activity Level`: `Household`→`households`, `Square Meter`→`floor_area` (extensible map).
 - Unit audit applies ONLY to rows the writer writes (v3 shows LEAP creates device-leaf `Final Energy Intensity` placeholder rows in Gigajoule; they are never written and must not block import).
 - Scenario names/IDs are read per file, never hardcoded (v3 area uses `Reference` ID 2 and adds `Target` ID 3; the writer targets one user-selected scenario, default `Reference`).
+- Output trimming: the returned workbook contains only written rows (plus headers); unwritten rows (Target scenario, spare regions, Load Shape, result variables, out-of-scope branches) are deleted from the output copy so LEAP's import cannot re-apply stale values. LEAP supports importing a row-deleted sheet.
 - Year-cell policy on write: write milestone years only; **clear all other year cells in written rows** (the reference file carries explicit `0` in every Reference Scenario year — leaving them pins the series to zero instead of letting `Interp` interpolate); set `Method = Interp`.
 
 ## USER PREREQUISITE (manual, in LEAP — before Stage 9 can be end-to-end tested)
