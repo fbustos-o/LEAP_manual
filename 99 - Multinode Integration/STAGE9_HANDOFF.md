@@ -20,12 +20,15 @@
 
 6. **Output trimming (NEW rule — replaces "preserve row order" on the OUTPUT file):** the exported workbook returned to the user contains ONLY the rows the writer actually wrote (header rows 1–3 and each written row's columns A–D preserved verbatim). All unwritten rows — `Target` scenario, non-selected regions, `Load Shape`, result/cost variables, out-of-scope branches — are removed from the output copy. Rationale: LEAP's import processes every remaining contiguous row; stale exported rows (e.g. `Target` rows carrying explicit 0s, or old values in unwritten variables) would otherwise be re-imported and could pin the Target scenario to zero or overwrite LEAP-side edits. LEAP explicitly supports row deletion ("You can safely delete rows... LEAP simply imports any remaining contiguous rows"). The in-memory template keeps all rows (it remains the binding source); trimming happens only when producing the output bytes.
 
+7. **Efficiency defaults auto-prefill (Stage 6 enhancement, do it in this pass):** replace the small generic seed of `data/device_efficiency_catalog.json` with the full device-level default table derived from `LEAP_superset_checklist.csv` (columns: `Branch_name_in_LEAP`, `LEAP_fuel_name`, `Default_eff_pct` — 374 entries, end-use-aware values such as Gas boiler 90 vs Gas stove 55, Kerosene Lamps 10). On template import, prefill each bound leaf's efficiency by matching (branch name, fuel name) against the catalog; fallback order: exact name+fuel match → fuel-level default → 1.0. Leaves that fell back are listed in the reconciliation report so the user can review them. The per-leaf dropdown remains for overrides ("User defined" included); prefilled values are ordinary editable values, not locks.
+
 ## 3. Tests to add before declaring Stage 9 complete
 - Activity-share conversion: for a synthetic end-use with known finals and efficiencies, written scenario `Activity Level` shares sum to 100 (±1e-6) and match hand-computed values.
 - Region isolation: filling values for RegionID 1 leaves every RegionID 2 cell byte-identical.
 - Scenario dynamism: writer resolves the target scenario by name from the parsed file (test with `Reference`), and refuses an unknown scenario name with a clear error.
 - Preservation test re-run against v3 (374 leaves, 3 scenarios, 2 regions, 39 year columns), amended for trimming: every row present in the output was written by the writer; its A–D cells are byte-identical to the input; no `Target` or non-selected-region row survives in the output.
 - Trimming safety: output row count == number of written rows; importing-side sanity = header row 3 intact and rows contiguous from row 4.
+- Efficiency prefill: importing the v3 fixture auto-assigns catalog defaults (spot-check: Heat Pump=300, Natural Gas Stove=55, Kerosene Lamps=10); unmatched-leaf fallback path covered by a synthetic test.
 
 ## 4. Updated Stage 9 User Verification Checklist (output this when done)
 - `pytest tests/test_leap_writer.py -q` green, including the previously skipped device-level tests (state expected test count).
