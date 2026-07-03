@@ -84,7 +84,12 @@ Superset matrix (branch name → LEAP fuel). Under Urban AND Rural:
 | Appliances (4) | Electricity, Natural Gas, LPG, Kerosene |
 | **Others_Unspecified (36, once)** | one leaf per recent-union fuel (full list above; includes the coal family detail, MSW, jet fuels, crude oil, by-product gases, etc.) |
 
-Totals: 49 leaves × 2 groups + 36 = **134 leaves**. Coal detail (Anthracite, Lignite, Sub-bituminous, Coking coal, coke/briquette by-products) lives only under `Others_Unspecified`; end-uses use `Other bituminous coal` as the representative coal device — per-fuel balance for the other coal types is still guaranteed by the catch-all.
+Totals: 49 leaves × 2 groups + 36 = **134 leaves**. The definitive leaf-by-leaf checklist (branch/device name, LEAP fuel name, LEAP fuel ID, ESTO code) is `LEAP_superset_checklist.csv`, delivered alongside this plan.
+
+**Fuel selection rules in the LEAP Fuels database (APERC area):**
+- The Fuels DB contains BOTH legacy names (`Diesel` #6, `Gasoline` #5, `Residual Fuel Oil` #9, `Wood` #18, `Solar` #24, `Coal Bituminous` #13…) and ESTO-aligned names (`Gas and diesel oil` #98, `Motor gasoline` #102, `Fuel oil` #62, `Fuelwood and woodwaste` #94, `Solar nonspecified` #117, `Other bituminous coal` #79…). **Always assign the ESTO-aligned fuel** — it is the name the dictionary maps to and the coverage check matches on. Never use entries suffixed `DO NOT USE`.
+- All 36 union fuels already exist in the Fuels DB — nothing needs to be added.
+- **Branch names are device names, not fuel names** (e.g. `Electric Heater` and `Heat Pump`, both consuming fuel Electricity). Sibling branch names must be unique — LEAP auto-renames duplicates (`Electricity #2`), which is why fuel-named branches break down when two devices share a fuel. Device identity across the round-trip is carried by the branch name/BranchID; the efficiency difference (resistance 100% vs heat pump 300%) lives in each leaf's `Efficiency` variable, written by multinode. Coal detail (Anthracite, Lignite, Sub-bituminous, Coking coal, coke/briquette by-products) lives only under `Others_Unspecified`; end-uses use `Other bituminous coal` as the representative coal device — per-fuel balance for the other coal types is still guaranteed by the catch-all.
 
 **LEAP Fuels database prerequisite:** before creating leaves, verify every LEAP fuel name used above exists in `General: Fuels` (Show: All Fuels). The default IEA-based list covers most; add missing ones once with the Add button.
 

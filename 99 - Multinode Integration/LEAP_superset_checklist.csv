@@ -1,0 +1,135 @@
+Group,End_use,Branch_name_in_LEAP,LEAP_fuel_name,LEAP_fuel_ID,ESTO_code
+Urban,Space Heating,Electric Heater,Electricity,1,17
+Urban,Space Heating,Heat Pump,Electricity,1,17
+Urban,Space Heating,Natural Gas Heater,Natural gas,2,08.01
+Urban,Space Heating,LPG Heater,LPG,8,07.09
+Urban,Space Heating,Kerosene Heater,Kerosene,3,07.06
+Urban,Space Heating,Diesel Heater,Gas and diesel oil,98,07.07
+Urban,Space Heating,Fuel Oil Boiler,Fuel oil,62,07.08
+Urban,Space Heating,District Heating,Heat,28,18
+Urban,Space Heating,Coal Heater,Other bituminous coal,79,01.02
+Urban,Space Heating,Wood Stove,Fuelwood and woodwaste,94,15.01
+Urban,Space Heating,Charcoal Heater,Charcoal,14,15.03
+Urban,Space Heating,Biomass Heater,Other biomass,106,15.05
+Urban,Space Heating,Biogas Heater,Biogas,35,16.01
+Urban,Space Heating,Geothermal Heating,Geothermal,25,11
+Urban,Space Heating,Solar Heating,Solar nonspecified,117,12.99
+Urban,Space Heating,Town Gas Heater,Gas works gas,76,08.03
+Urban,Space Cooling,Heat Pump AC,Electricity,1,17
+Urban,Space Cooling,District Cooling,Heat,28,18
+Urban,Water Heating,Electric Water Heater,Electricity,1,17
+Urban,Water Heating,Natural Gas Water Heater,Natural gas,2,08.01
+Urban,Water Heating,LPG Water Heater,LPG,8,07.09
+Urban,Water Heating,Kerosene Water Heater,Kerosene,3,07.06
+Urban,Water Heating,Diesel Water Heater,Gas and diesel oil,98,07.07
+Urban,Water Heating,Fuel Oil Boiler,Fuel oil,62,07.08
+Urban,Water Heating,District Heat Water,Heat,28,18
+Urban,Water Heating,Solar Water Heater,Solar nonspecified,117,12.99
+Urban,Water Heating,Wood Water Heater,Fuelwood and woodwaste,94,15.01
+Urban,Water Heating,Charcoal Water Heater,Charcoal,14,15.03
+Urban,Water Heating,Biomass Water Heater,Other biomass,106,15.05
+Urban,Water Heating,Biogas Water Heater,Biogas,35,16.01
+Urban,Water Heating,Coal Water Heater,Other bituminous coal,79,01.02
+Urban,Water Heating,Town Gas Water Heater,Gas works gas,76,08.03
+Urban,Water Heating,Geothermal Water Heating,Geothermal,25,11
+Urban,Cooking,Electric Stove,Electricity,1,17
+Urban,Cooking,Natural Gas Stove,Natural gas,2,08.01
+Urban,Cooking,LPG Stove,LPG,8,07.09
+Urban,Cooking,Kerosene Stove,Kerosene,3,07.06
+Urban,Cooking,Wood Stove,Fuelwood and woodwaste,94,15.01
+Urban,Cooking,Charcoal Stove,Charcoal,14,15.03
+Urban,Cooking,Biomass Stove,Other biomass,106,15.05
+Urban,Cooking,Biogas Stove,Biogas,35,16.01
+Urban,Cooking,Coal Stove,Other bituminous coal,79,01.02
+Urban,Cooking,Town Gas Stove,Gas works gas,76,08.03
+Urban,Lighting,Electric Lighting,Electricity,1,17
+Urban,Lighting,Kerosene Lamps,Kerosene,3,07.06
+Urban,Appliances,Electric Appliances,Electricity,1,17
+Urban,Appliances,Natural Gas Appliances,Natural gas,2,08.01
+Urban,Appliances,LPG Appliances,LPG,8,07.09
+Urban,Appliances,Kerosene Appliances,Kerosene,3,07.06
+Rural,Space Heating,Electric Heater,Electricity,1,17
+Rural,Space Heating,Heat Pump,Electricity,1,17
+Rural,Space Heating,Natural Gas Heater,Natural gas,2,08.01
+Rural,Space Heating,LPG Heater,LPG,8,07.09
+Rural,Space Heating,Kerosene Heater,Kerosene,3,07.06
+Rural,Space Heating,Diesel Heater,Gas and diesel oil,98,07.07
+Rural,Space Heating,Fuel Oil Boiler,Fuel oil,62,07.08
+Rural,Space Heating,District Heating,Heat,28,18
+Rural,Space Heating,Coal Heater,Other bituminous coal,79,01.02
+Rural,Space Heating,Wood Stove,Fuelwood and woodwaste,94,15.01
+Rural,Space Heating,Charcoal Heater,Charcoal,14,15.03
+Rural,Space Heating,Biomass Heater,Other biomass,106,15.05
+Rural,Space Heating,Biogas Heater,Biogas,35,16.01
+Rural,Space Heating,Geothermal Heating,Geothermal,25,11
+Rural,Space Heating,Solar Heating,Solar nonspecified,117,12.99
+Rural,Space Heating,Town Gas Heater,Gas works gas,76,08.03
+Rural,Space Cooling,Heat Pump AC,Electricity,1,17
+Rural,Space Cooling,District Cooling,Heat,28,18
+Rural,Water Heating,Electric Water Heater,Electricity,1,17
+Rural,Water Heating,Natural Gas Water Heater,Natural gas,2,08.01
+Rural,Water Heating,LPG Water Heater,LPG,8,07.09
+Rural,Water Heating,Kerosene Water Heater,Kerosene,3,07.06
+Rural,Water Heating,Diesel Water Heater,Gas and diesel oil,98,07.07
+Rural,Water Heating,Fuel Oil Boiler,Fuel oil,62,07.08
+Rural,Water Heating,District Heat Water,Heat,28,18
+Rural,Water Heating,Solar Water Heater,Solar nonspecified,117,12.99
+Rural,Water Heating,Wood Water Heater,Fuelwood and woodwaste,94,15.01
+Rural,Water Heating,Charcoal Water Heater,Charcoal,14,15.03
+Rural,Water Heating,Biomass Water Heater,Other biomass,106,15.05
+Rural,Water Heating,Biogas Water Heater,Biogas,35,16.01
+Rural,Water Heating,Coal Water Heater,Other bituminous coal,79,01.02
+Rural,Water Heating,Town Gas Water Heater,Gas works gas,76,08.03
+Rural,Water Heating,Geothermal Water Heating,Geothermal,25,11
+Rural,Cooking,Electric Stove,Electricity,1,17
+Rural,Cooking,Natural Gas Stove,Natural gas,2,08.01
+Rural,Cooking,LPG Stove,LPG,8,07.09
+Rural,Cooking,Kerosene Stove,Kerosene,3,07.06
+Rural,Cooking,Wood Stove,Fuelwood and woodwaste,94,15.01
+Rural,Cooking,Charcoal Stove,Charcoal,14,15.03
+Rural,Cooking,Biomass Stove,Other biomass,106,15.05
+Rural,Cooking,Biogas Stove,Biogas,35,16.01
+Rural,Cooking,Coal Stove,Other bituminous coal,79,01.02
+Rural,Cooking,Town Gas Stove,Gas works gas,76,08.03
+Rural,Lighting,Electric Lighting,Electricity,1,17
+Rural,Lighting,Kerosene Lamps,Kerosene,3,07.06
+Rural,Appliances,Electric Appliances,Electricity,1,17
+Rural,Appliances,Natural Gas Appliances,Natural gas,2,08.01
+Rural,Appliances,LPG Appliances,LPG,8,07.09
+Rural,Appliances,Kerosene Appliances,Kerosene,3,07.06
+Others_Unspecified,-,Electricity,Electricity,1,17
+Others_Unspecified,-,Natural gas,Natural gas,2,08.01
+Others_Unspecified,-,Kerosene,Kerosene,3,07.06
+Others_Unspecified,-,LPG,LPG,8,07.09
+Others_Unspecified,-,Crude oil,Crude oil,11,06.01
+Others_Unspecified,-,Charcoal,Charcoal,14,15.03
+Others_Unspecified,-,Biogasoline,Biogasoline,21,16.05
+Others_Unspecified,-,Geothermal,Geothermal,25,11
+Others_Unspecified,-,Heat,Heat,28,18
+Others_Unspecified,-,Biogas,Biogas,35,16.01
+Others_Unspecified,-,Bagasse,Bagasse,51,15.02
+Others_Unspecified,-,Fuel oil,Fuel oil,62,07.08
+Others_Unspecified,-,Aviation gasoline,Aviation gasoline,65,07.02
+Others_Unspecified,-,Biodiesel,Biodiesel,67,16.06
+Others_Unspecified,-,Gas works gas,Gas works gas,76,08.03
+Others_Unspecified,-,Patent fuel,Patent fuel,78,02.06
+Others_Unspecified,-,Other bituminous coal,Other bituminous coal,79,01.02
+Others_Unspecified,-,Coking coal,Coking coal,80,01.01
+Others_Unspecified,-,Coke oven gas,Coke oven gas,81,02.03
+Others_Unspecified,-,Coal tar,Coal tar,83,02.07
+Others_Unspecified,-,Coke oven coke,Coke oven coke,85,02.01
+Others_Unspecified,-,Lignite,Lignite,86,01.05
+Others_Unspecified,-,Anthracite,Anthracite,87,01.04
+Others_Unspecified,-,BKB and PB,BKB and PB,89,02.08
+Others_Unspecified,-,Fuelwood and woodwaste,Fuelwood and woodwaste,94,15.01
+Others_Unspecified,-,Gas and diesel oil,Gas and diesel oil,98,07.07
+Others_Unspecified,-,Industrial waste,Industrial waste,100,16.02
+Others_Unspecified,-,Kerosene type jet fuel,Kerosene type jet fuel,101,07.05
+Others_Unspecified,-,Motor gasoline,Motor gasoline,102,07.01
+Others_Unspecified,-,Municipal solid waste renewable,Municipal solid waste renewable,103,16.03
+Others_Unspecified,-,Other biomass,Other biomass,106,15.05
+Others_Unspecified,-,Other products,Other products,109,07.17
+Others_Unspecified,-,Other recovered gases,Other recovered gases,110,02.05
+Others_Unspecified,-,Solar nonspecified,Solar nonspecified,117,12.99
+Others_Unspecified,-,Municipal solid waste non renewable,Municipal solid waste non renewable,122,16.04
+Others_Unspecified,-,Sub bituminous coal,Sub bituminous coal,123,01.03
