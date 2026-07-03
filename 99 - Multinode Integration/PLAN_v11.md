@@ -41,6 +41,8 @@ All artifacts, code, UI text, and logs in **professional English** (project deci
 - Row identity = (`BranchID`,`VariableID`,`ScenarioID`,`RegionID`). Preserve columns A–D, spacer, `#N/A` column, hidden-column state, row order **byte-for-byte**.
 - Variable pattern: categories (Residential/Urban/Rural/Others_Unspecified) carry `Total Activity` + `Activity Level` (% Share); end-uses carry those plus `Final Energy Intensity` (CA only), `Useful Energy Intensity`, `Load Shape`; device leaves (after superset exists) will add `Fuel Share`, `Efficiency`.
 - Driver detection from `Units` of end-use `Activity Level`: `Household`→`households`, `Square Meter`→`floor_area` (extensible map).
+- Unit audit applies ONLY to rows the writer writes (v3 shows LEAP creates device-leaf `Final Energy Intensity` placeholder rows in Gigajoule; they are never written and must not block import).
+- Scenario names/IDs are read per file, never hardcoded (v3 area uses `Reference` ID 2 and adds `Target` ID 3; the writer targets one user-selected scenario, default `Reference`).
 - Year-cell policy on write: write milestone years only; **clear all other year cells in written rows** (the reference file carries explicit `0` in every Reference Scenario year — leaving them pins the series to zero instead of letting `Interp` interpolate); set `Method = Interp`.
 
 ## USER PREREQUISITE (manual, in LEAP — before Stage 9 can be end-to-end tested)
@@ -165,7 +167,8 @@ Stages 0–8 proceed against v2; Stage 9 tests are written against v3 and marked
    - CA end-use `Final Energy Intensity` (base year): Σ leaf `calculated_pj` ÷ end-use activity (in driver units); if activity dimensionless → total PJ.
    - CA/REF `Activity Level`: absolute driver values at end-uses; shares ×100 at category levels (Urban/Rural/Others weights).
    - REF end-use `Useful Energy Intensity` (each milestone year incl. horizon): Σ_leaves (final_pj × efficiency) ÷ activity.
-   - Device rows (only if bound, i.e. v3 template): `Fuel Share` = leaf share of end-use final energy ×100; `Efficiency` = efficiency ×100; absent-fuel leaves get explicit 0 share.
+   - Device rows, Current Accounts (v3 finding): `Fuel Share` = leaf share of end-use final energy ×100; `Efficiency` = efficiency ×100; absent-fuel leaves get explicit 0 share.
+   - Device rows, scenario years (v3 finding — devices do NOT carry `Fuel Share` in scenarios): write `Activity Level` (share %) instead, computed as act_share_i = (final_pj_i × eff_i) / Σ_j (final_pj_j × eff_j) ×100 within the end-use (LEAP projects device activity shares, from which it derives fuel shares); `Efficiency` per milestone year.
    - Clear non-milestone year cells in every written row; `Method = Interp`; round to 6 significant digits; write numbers not strings.
 3. `POST /leap/export-values` returns the file, named `<area>_<economy>_<sector>_<timestamp>.xlsx`; `?dry_run=true` returns the change list (row, column, old, new) for a UI review screen. Refuse to export if the session fingerprint ≠ template fingerprint (P4: same-area guarantee) or while target-fuel coverage findings from Stage 4 remain unresolved.
 4. Frontend: "Export to LEAP (filled template)" button + dry-run review modal.

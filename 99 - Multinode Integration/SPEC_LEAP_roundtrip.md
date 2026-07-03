@@ -74,7 +74,9 @@ Single sheet named `Export`.
 | `Final Energy Intensity` | ✅ base year value (2022) | ❌ not present — do not write |
 | `Useful Energy Intensity` | derived by LEAP — leave untouched | ✅ milestone years |
 | `Activity Level` / `Total Activity` | ✅ base year | ✅ milestone years |
-| `Fuel Share`, `Efficiency` (device rows) | ✅ base year | ✅ milestone years |
+| `Fuel Share` (device rows) | ✅ base year | ❌ not present — write `Activity Level` (share) instead |
+| `Activity Level` share (device rows) | derived by LEAP | ✅ milestone years: act_share_i ∝ final_i × eff_i (normalized per end-use) |
+| `Efficiency` (device rows) | ✅ base year | ✅ milestone years |
 | `Load Shape` | leave untouched | leave untouched |
 
 ---
@@ -92,7 +94,7 @@ Single sheet named `Export`.
 5. **Rebuild tree**: split `Branch Path`; create/merge Multinode nodes level by level. Classify each branch (category / end-use / device) from its variable pattern (§3).
 6. **Bind linkage metadata**: for every node store `leap_binding = { branch_id, rows: [{variable, scenario_id, region_id, row_index, method, scale, units}] }`. Multinode's internal state (telemetry/save files) must persist this binding.
 7. **Driver detection**: read the `Units` of each end-use `Activity Level` row and map to Multinode macro-drivers (`Household` → `households`, `Square Meter` → `floor_area`; extensible lookup table). Conflicts with an existing `macro_driver_link` are reported, not silently overwritten.
-8. **Unit audit**: every `Final Energy Intensity` / `Useful Energy Intensity` row must be `Petajoule`. Any other unit (e.g. `Gigajoule`) ⇒ blocking finding in the reconciliation report: fix in LEAP and re-export (per project decision, units are corrected on the LEAP side, not converted silently).
+8. **Unit audit**: every `Final Energy Intensity` / `Useful Energy Intensity` row **that the writer targets** (end-use level) must be `Petajoule`; device-leaf FEI placeholder rows (created by LEAP in GJ) are ignored. Any other unit (e.g. `Gigajoule`) ⇒ blocking finding in the reconciliation report: fix in LEAP and re-export (per project decision, units are corrected on the LEAP side, not converted silently).
 9. **Reconciliation report** (returned to the UI):
    - branches in scope with no Multinode counterpart (new to Multinode) — will be adopted;
    - Multinode nodes with no LEAP branch — routed to the Structure Channel backlog (§6);
