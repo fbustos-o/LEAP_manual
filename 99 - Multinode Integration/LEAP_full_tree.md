@@ -1,8 +1,8 @@
-# LEAP Buildings tree — full superset (devices → fuels → default efficiencies)
+# LEAP Buildings tree — full superset v2 (devices → fuels → default efficiencies)
 
-Fuel IDs (#) refer to the LEAP Fuels database (`Fuels_LEAP.xlsx`). Always the ESTO-aligned fuel names; never `DO NOT USE` entries.
-Efficiencies are seed defaults for the multinode catalog (useful-energy convention; editable per year, `User defined` allowed).
-Appliances and Others leaves use η = 100% (final = useful pass-through).
+Changes vs v1: Services has NO Cooking; its equipment branch is `Other Equipment` (13 leaves — absorbs commercial cooking fuels, gensets and miscellaneous equipment, per ESTO 16.01 data); Water Heating gains Heat Pump Water Heater; Lighting split into Electric Traditional / Electric LED.
+Fuel IDs (#) refer to the LEAP Fuels database. Always ESTO-aligned fuel names; never `DO NOT USE` entries.
+Efficiencies are seed defaults (useful-energy convention; editable per year). Appliances/Other Equipment/Others leaves use η = 100% (pass-through).
 
 ```
 Demand
@@ -31,6 +31,7 @@ Demand
      │   │   │   └─ District Cooling → fuel: Heat        (#28 ) (η ≈ 90%)
      │   │   ├─ Water Heating
      │   │   │   ├─ Electric Water Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Heat Pump Water Heater   → fuel: Electricity            (#1  ) (η ≈ 300%)
      │   │   │   ├─ Natural Gas Water Heater → fuel: Natural gas            (#2  ) (η ≈ 90%)
      │   │   │   ├─ LPG Water Heater         → fuel: LPG                    (#8  ) (η ≈ 85%)
      │   │   │   ├─ Kerosene Water Heater    → fuel: Kerosene               (#3  ) (η ≈ 80%)
@@ -57,8 +58,9 @@ Demand
      │   │   │   ├─ Coal Stove        → fuel: Other bituminous coal  (#79 ) (η ≈ 30%)
      │   │   │   └─ Town Gas Stove    → fuel: Gas works gas          (#76 ) (η ≈ 55%)
      │   │   ├─ Lighting
-     │   │   │   ├─ Electric Lighting → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │   │   └─ Kerosene Lamps    → fuel: Kerosene    (#3  ) (η ≈ 10%)
+     │   │   │   ├─ Electric Traditional → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Electric LED         → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   └─ Kerosene Lamps       → fuel: Kerosene    (#3  ) (η ≈ 10%)
      │   │   └─ Appliances
      │   │       ├─ Electric Appliances    → fuel: Electricity (#1  ) (η ≈ 100%)
      │   │       ├─ Natural Gas Appliances → fuel: Natural gas (#2  ) (η ≈ 100%)
@@ -87,6 +89,7 @@ Demand
      │   │   │   └─ District Cooling → fuel: Heat        (#28 ) (η ≈ 90%)
      │   │   ├─ Water Heating
      │   │   │   ├─ Electric Water Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Heat Pump Water Heater   → fuel: Electricity            (#1  ) (η ≈ 300%)
      │   │   │   ├─ Natural Gas Water Heater → fuel: Natural gas            (#2  ) (η ≈ 90%)
      │   │   │   ├─ LPG Water Heater         → fuel: LPG                    (#8  ) (η ≈ 85%)
      │   │   │   ├─ Kerosene Water Heater    → fuel: Kerosene               (#3  ) (η ≈ 80%)
@@ -113,8 +116,9 @@ Demand
      │   │   │   ├─ Coal Stove        → fuel: Other bituminous coal  (#79 ) (η ≈ 30%)
      │   │   │   └─ Town Gas Stove    → fuel: Gas works gas          (#76 ) (η ≈ 55%)
      │   │   ├─ Lighting
-     │   │   │   ├─ Electric Lighting → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │   │   └─ Kerosene Lamps    → fuel: Kerosene    (#3  ) (η ≈ 10%)
+     │   │   │   ├─ Electric Traditional → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Electric LED         → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   └─ Kerosene Lamps       → fuel: Kerosene    (#3  ) (η ≈ 10%)
      │   │   └─ Appliances
      │   │       ├─ Electric Appliances    → fuel: Electricity (#1  ) (η ≈ 100%)
      │   │       ├─ Natural Gas Appliances → fuel: Natural gas (#2  ) (η ≈ 100%)
@@ -147,6 +151,7 @@ Demand
      │        ├─ BKB and PB                          → fuel: BKB and PB (#89) (η = 100%)
      │        ├─ Fuelwood and woodwaste              → fuel: Fuelwood and woodwaste (#94) (η = 100%)
      │        ├─ Gas and diesel oil                  → fuel: Gas and diesel oil (#98) (η = 100%)
+     │        ├─ Industrial waste                    → fuel: Industrial waste (#100) (η = 100%)
      │        ├─ Kerosene type jet fuel              → fuel: Kerosene type jet fuel (#101) (η = 100%)
      │        ├─ Motor gasoline                      → fuel: Motor gasoline (#102) (η = 100%)
      │        ├─ Municipal solid waste renewable     → fuel: Municipal solid waste renewable (#103) (η = 100%)
@@ -155,8 +160,7 @@ Demand
      │        ├─ Other recovered gases               → fuel: Other recovered gases (#110) (η = 100%)
      │        ├─ Solar nonspecified                  → fuel: Solar nonspecified (#117) (η = 100%)
      │        ├─ Municipal solid waste non renewable → fuel: Municipal solid waste non renewable (#122) (η = 100%)
-     │        ├─ Sub bituminous coal                 → fuel: Sub bituminous coal (#123) (η = 100%)
-     │        └─ Industrial waste                    → fuel: Industrial waste (#100) (η = 100%)
+     │        └─ Sub bituminous coal                 → fuel: Sub bituminous coal (#123) (η = 100%)
      ├─ Services                                     [ESTO flow 16.01]
      │   ├─ Service Buildings
      │   │   ├─ Space Heating
@@ -181,6 +185,7 @@ Demand
      │   │   │   └─ District Cooling → fuel: Heat        (#28 ) (η ≈ 90%)
      │   │   ├─ Water Heating
      │   │   │   ├─ Electric Water Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Heat Pump Water Heater   → fuel: Electricity            (#1  ) (η ≈ 300%)
      │   │   │   ├─ Natural Gas Water Heater → fuel: Natural gas            (#2  ) (η ≈ 90%)
      │   │   │   ├─ LPG Water Heater         → fuel: LPG                    (#8  ) (η ≈ 85%)
      │   │   │   ├─ Kerosene Water Heater    → fuel: Kerosene               (#3  ) (η ≈ 80%)
@@ -195,25 +200,24 @@ Demand
      │   │   │   ├─ Coal Water Heater        → fuel: Other bituminous coal  (#79 ) (η ≈ 70%)
      │   │   │   ├─ Town Gas Water Heater    → fuel: Gas works gas          (#76 ) (η ≈ 85%)
      │   │   │   └─ Geothermal Water Heating → fuel: Geothermal             (#25 ) (η ≈ 100%)
-     │   │   ├─ Cooking
-     │   │   │   ├─ Electric Stove    → fuel: Electricity            (#1  ) (η ≈ 80%)
-     │   │   │   ├─ Natural Gas Stove → fuel: Natural gas            (#2  ) (η ≈ 55%)
-     │   │   │   ├─ LPG Stove         → fuel: LPG                    (#8  ) (η ≈ 55%)
-     │   │   │   ├─ Kerosene Stove    → fuel: Kerosene               (#3  ) (η ≈ 45%)
-     │   │   │   ├─ Wood Stove        → fuel: Fuelwood and woodwaste (#94 ) (η ≈ 20%)
-     │   │   │   ├─ Charcoal Stove    → fuel: Charcoal               (#14 ) (η ≈ 25%)
-     │   │   │   ├─ Biomass Stove     → fuel: Other biomass          (#106) (η ≈ 20%)
-     │   │   │   ├─ Biogas Stove      → fuel: Biogas                 (#35 ) (η ≈ 55%)
-     │   │   │   ├─ Coal Stove        → fuel: Other bituminous coal  (#79 ) (η ≈ 30%)
-     │   │   │   └─ Town Gas Stove    → fuel: Gas works gas          (#76 ) (η ≈ 55%)
      │   │   ├─ Lighting
-     │   │   │   ├─ Electric Lighting → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │   │   └─ Kerosene Lamps    → fuel: Kerosene    (#3  ) (η ≈ 10%)
-     │   │   └─ Appliances
-     │   │       ├─ Electric Appliances    → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │       ├─ Natural Gas Appliances → fuel: Natural gas (#2  ) (η ≈ 100%)
-     │   │       ├─ LPG Appliances         → fuel: LPG         (#8  ) (η ≈ 100%)
-     │   │       └─ Kerosene Appliances    → fuel: Kerosene    (#3  ) (η ≈ 100%)
+     │   │   │   ├─ Electric Traditional → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Electric LED         → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   └─ Kerosene Lamps       → fuel: Kerosene    (#3  ) (η ≈ 10%)
+     │   │   └─ Other Equipment
+     │   │       ├─ Electric Equipment    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │       ├─ Natural Gas Equipment → fuel: Natural gas            (#2  ) (η ≈ 100%)
+     │   │       ├─ LPG Equipment         → fuel: LPG                    (#8  ) (η ≈ 100%)
+     │   │       ├─ Kerosene Equipment    → fuel: Kerosene               (#3  ) (η ≈ 100%)
+     │   │       ├─ Diesel Genset         → fuel: Gas and diesel oil     (#98 ) (η ≈ 100%)
+     │   │       ├─ Gasoline Genset       → fuel: Motor gasoline         (#102) (η ≈ 100%)
+     │   │       ├─ Fuel Oil Equipment    → fuel: Fuel oil               (#62 ) (η ≈ 100%)
+     │   │       ├─ Wood Equipment        → fuel: Fuelwood and woodwaste (#94 ) (η ≈ 100%)
+     │   │       ├─ Charcoal Equipment    → fuel: Charcoal               (#14 ) (η ≈ 100%)
+     │   │       ├─ Biomass Equipment     → fuel: Other biomass          (#106) (η ≈ 100%)
+     │   │       ├─ Biogas Equipment      → fuel: Biogas                 (#35 ) (η ≈ 100%)
+     │   │       ├─ Coal Equipment        → fuel: Other bituminous coal  (#79 ) (η ≈ 100%)
+     │   │       └─ Town Gas Equipment    → fuel: Gas works gas          (#76 ) (η ≈ 100%)
      │   ├─ Educational
      │   │   ├─ Space Heating
      │   │   │   ├─ Electric Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
@@ -237,6 +241,7 @@ Demand
      │   │   │   └─ District Cooling → fuel: Heat        (#28 ) (η ≈ 90%)
      │   │   ├─ Water Heating
      │   │   │   ├─ Electric Water Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Heat Pump Water Heater   → fuel: Electricity            (#1  ) (η ≈ 300%)
      │   │   │   ├─ Natural Gas Water Heater → fuel: Natural gas            (#2  ) (η ≈ 90%)
      │   │   │   ├─ LPG Water Heater         → fuel: LPG                    (#8  ) (η ≈ 85%)
      │   │   │   ├─ Kerosene Water Heater    → fuel: Kerosene               (#3  ) (η ≈ 80%)
@@ -251,25 +256,24 @@ Demand
      │   │   │   ├─ Coal Water Heater        → fuel: Other bituminous coal  (#79 ) (η ≈ 70%)
      │   │   │   ├─ Town Gas Water Heater    → fuel: Gas works gas          (#76 ) (η ≈ 85%)
      │   │   │   └─ Geothermal Water Heating → fuel: Geothermal             (#25 ) (η ≈ 100%)
-     │   │   ├─ Cooking
-     │   │   │   ├─ Electric Stove    → fuel: Electricity            (#1  ) (η ≈ 80%)
-     │   │   │   ├─ Natural Gas Stove → fuel: Natural gas            (#2  ) (η ≈ 55%)
-     │   │   │   ├─ LPG Stove         → fuel: LPG                    (#8  ) (η ≈ 55%)
-     │   │   │   ├─ Kerosene Stove    → fuel: Kerosene               (#3  ) (η ≈ 45%)
-     │   │   │   ├─ Wood Stove        → fuel: Fuelwood and woodwaste (#94 ) (η ≈ 20%)
-     │   │   │   ├─ Charcoal Stove    → fuel: Charcoal               (#14 ) (η ≈ 25%)
-     │   │   │   ├─ Biomass Stove     → fuel: Other biomass          (#106) (η ≈ 20%)
-     │   │   │   ├─ Biogas Stove      → fuel: Biogas                 (#35 ) (η ≈ 55%)
-     │   │   │   ├─ Coal Stove        → fuel: Other bituminous coal  (#79 ) (η ≈ 30%)
-     │   │   │   └─ Town Gas Stove    → fuel: Gas works gas          (#76 ) (η ≈ 55%)
      │   │   ├─ Lighting
-     │   │   │   ├─ Electric Lighting → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │   │   └─ Kerosene Lamps    → fuel: Kerosene    (#3  ) (η ≈ 10%)
-     │   │   └─ Appliances
-     │   │       ├─ Electric Appliances    → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │       ├─ Natural Gas Appliances → fuel: Natural gas (#2  ) (η ≈ 100%)
-     │   │       ├─ LPG Appliances         → fuel: LPG         (#8  ) (η ≈ 100%)
-     │   │       └─ Kerosene Appliances    → fuel: Kerosene    (#3  ) (η ≈ 100%)
+     │   │   │   ├─ Electric Traditional → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Electric LED         → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   └─ Kerosene Lamps       → fuel: Kerosene    (#3  ) (η ≈ 10%)
+     │   │   └─ Other Equipment
+     │   │       ├─ Electric Equipment    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │       ├─ Natural Gas Equipment → fuel: Natural gas            (#2  ) (η ≈ 100%)
+     │   │       ├─ LPG Equipment         → fuel: LPG                    (#8  ) (η ≈ 100%)
+     │   │       ├─ Kerosene Equipment    → fuel: Kerosene               (#3  ) (η ≈ 100%)
+     │   │       ├─ Diesel Genset         → fuel: Gas and diesel oil     (#98 ) (η ≈ 100%)
+     │   │       ├─ Gasoline Genset       → fuel: Motor gasoline         (#102) (η ≈ 100%)
+     │   │       ├─ Fuel Oil Equipment    → fuel: Fuel oil               (#62 ) (η ≈ 100%)
+     │   │       ├─ Wood Equipment        → fuel: Fuelwood and woodwaste (#94 ) (η ≈ 100%)
+     │   │       ├─ Charcoal Equipment    → fuel: Charcoal               (#14 ) (η ≈ 100%)
+     │   │       ├─ Biomass Equipment     → fuel: Other biomass          (#106) (η ≈ 100%)
+     │   │       ├─ Biogas Equipment      → fuel: Biogas                 (#35 ) (η ≈ 100%)
+     │   │       ├─ Coal Equipment        → fuel: Other bituminous coal  (#79 ) (η ≈ 100%)
+     │   │       └─ Town Gas Equipment    → fuel: Gas works gas          (#76 ) (η ≈ 100%)
      │   ├─ Hospitals
      │   │   ├─ Space Heating
      │   │   │   ├─ Electric Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
@@ -293,6 +297,7 @@ Demand
      │   │   │   └─ District Cooling → fuel: Heat        (#28 ) (η ≈ 90%)
      │   │   ├─ Water Heating
      │   │   │   ├─ Electric Water Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Heat Pump Water Heater   → fuel: Electricity            (#1  ) (η ≈ 300%)
      │   │   │   ├─ Natural Gas Water Heater → fuel: Natural gas            (#2  ) (η ≈ 90%)
      │   │   │   ├─ LPG Water Heater         → fuel: LPG                    (#8  ) (η ≈ 85%)
      │   │   │   ├─ Kerosene Water Heater    → fuel: Kerosene               (#3  ) (η ≈ 80%)
@@ -307,25 +312,24 @@ Demand
      │   │   │   ├─ Coal Water Heater        → fuel: Other bituminous coal  (#79 ) (η ≈ 70%)
      │   │   │   ├─ Town Gas Water Heater    → fuel: Gas works gas          (#76 ) (η ≈ 85%)
      │   │   │   └─ Geothermal Water Heating → fuel: Geothermal             (#25 ) (η ≈ 100%)
-     │   │   ├─ Cooking
-     │   │   │   ├─ Electric Stove    → fuel: Electricity            (#1  ) (η ≈ 80%)
-     │   │   │   ├─ Natural Gas Stove → fuel: Natural gas            (#2  ) (η ≈ 55%)
-     │   │   │   ├─ LPG Stove         → fuel: LPG                    (#8  ) (η ≈ 55%)
-     │   │   │   ├─ Kerosene Stove    → fuel: Kerosene               (#3  ) (η ≈ 45%)
-     │   │   │   ├─ Wood Stove        → fuel: Fuelwood and woodwaste (#94 ) (η ≈ 20%)
-     │   │   │   ├─ Charcoal Stove    → fuel: Charcoal               (#14 ) (η ≈ 25%)
-     │   │   │   ├─ Biomass Stove     → fuel: Other biomass          (#106) (η ≈ 20%)
-     │   │   │   ├─ Biogas Stove      → fuel: Biogas                 (#35 ) (η ≈ 55%)
-     │   │   │   ├─ Coal Stove        → fuel: Other bituminous coal  (#79 ) (η ≈ 30%)
-     │   │   │   └─ Town Gas Stove    → fuel: Gas works gas          (#76 ) (η ≈ 55%)
      │   │   ├─ Lighting
-     │   │   │   ├─ Electric Lighting → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │   │   └─ Kerosene Lamps    → fuel: Kerosene    (#3  ) (η ≈ 10%)
-     │   │   └─ Appliances
-     │   │       ├─ Electric Appliances    → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │       ├─ Natural Gas Appliances → fuel: Natural gas (#2  ) (η ≈ 100%)
-     │   │       ├─ LPG Appliances         → fuel: LPG         (#8  ) (η ≈ 100%)
-     │   │       └─ Kerosene Appliances    → fuel: Kerosene    (#3  ) (η ≈ 100%)
+     │   │   │   ├─ Electric Traditional → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Electric LED         → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   └─ Kerosene Lamps       → fuel: Kerosene    (#3  ) (η ≈ 10%)
+     │   │   └─ Other Equipment
+     │   │       ├─ Electric Equipment    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │       ├─ Natural Gas Equipment → fuel: Natural gas            (#2  ) (η ≈ 100%)
+     │   │       ├─ LPG Equipment         → fuel: LPG                    (#8  ) (η ≈ 100%)
+     │   │       ├─ Kerosene Equipment    → fuel: Kerosene               (#3  ) (η ≈ 100%)
+     │   │       ├─ Diesel Genset         → fuel: Gas and diesel oil     (#98 ) (η ≈ 100%)
+     │   │       ├─ Gasoline Genset       → fuel: Motor gasoline         (#102) (η ≈ 100%)
+     │   │       ├─ Fuel Oil Equipment    → fuel: Fuel oil               (#62 ) (η ≈ 100%)
+     │   │       ├─ Wood Equipment        → fuel: Fuelwood and woodwaste (#94 ) (η ≈ 100%)
+     │   │       ├─ Charcoal Equipment    → fuel: Charcoal               (#14 ) (η ≈ 100%)
+     │   │       ├─ Biomass Equipment     → fuel: Other biomass          (#106) (η ≈ 100%)
+     │   │       ├─ Biogas Equipment      → fuel: Biogas                 (#35 ) (η ≈ 100%)
+     │   │       ├─ Coal Equipment        → fuel: Other bituminous coal  (#79 ) (η ≈ 100%)
+     │   │       └─ Town Gas Equipment    → fuel: Gas works gas          (#76 ) (η ≈ 100%)
      │   ├─ Data_Centers
      │   │   ├─ Space Heating
      │   │   │   ├─ Electric Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
@@ -349,6 +353,7 @@ Demand
      │   │   │   └─ District Cooling → fuel: Heat        (#28 ) (η ≈ 90%)
      │   │   ├─ Water Heating
      │   │   │   ├─ Electric Water Heater    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Heat Pump Water Heater   → fuel: Electricity            (#1  ) (η ≈ 300%)
      │   │   │   ├─ Natural Gas Water Heater → fuel: Natural gas            (#2  ) (η ≈ 90%)
      │   │   │   ├─ LPG Water Heater         → fuel: LPG                    (#8  ) (η ≈ 85%)
      │   │   │   ├─ Kerosene Water Heater    → fuel: Kerosene               (#3  ) (η ≈ 80%)
@@ -363,25 +368,24 @@ Demand
      │   │   │   ├─ Coal Water Heater        → fuel: Other bituminous coal  (#79 ) (η ≈ 70%)
      │   │   │   ├─ Town Gas Water Heater    → fuel: Gas works gas          (#76 ) (η ≈ 85%)
      │   │   │   └─ Geothermal Water Heating → fuel: Geothermal             (#25 ) (η ≈ 100%)
-     │   │   ├─ Cooking
-     │   │   │   ├─ Electric Stove    → fuel: Electricity            (#1  ) (η ≈ 80%)
-     │   │   │   ├─ Natural Gas Stove → fuel: Natural gas            (#2  ) (η ≈ 55%)
-     │   │   │   ├─ LPG Stove         → fuel: LPG                    (#8  ) (η ≈ 55%)
-     │   │   │   ├─ Kerosene Stove    → fuel: Kerosene               (#3  ) (η ≈ 45%)
-     │   │   │   ├─ Wood Stove        → fuel: Fuelwood and woodwaste (#94 ) (η ≈ 20%)
-     │   │   │   ├─ Charcoal Stove    → fuel: Charcoal               (#14 ) (η ≈ 25%)
-     │   │   │   ├─ Biomass Stove     → fuel: Other biomass          (#106) (η ≈ 20%)
-     │   │   │   ├─ Biogas Stove      → fuel: Biogas                 (#35 ) (η ≈ 55%)
-     │   │   │   ├─ Coal Stove        → fuel: Other bituminous coal  (#79 ) (η ≈ 30%)
-     │   │   │   └─ Town Gas Stove    → fuel: Gas works gas          (#76 ) (η ≈ 55%)
      │   │   ├─ Lighting
-     │   │   │   ├─ Electric Lighting → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │   │   └─ Kerosene Lamps    → fuel: Kerosene    (#3  ) (η ≈ 10%)
-     │   │   └─ Appliances
-     │   │       ├─ Electric Appliances    → fuel: Electricity (#1  ) (η ≈ 100%)
-     │   │       ├─ Natural Gas Appliances → fuel: Natural gas (#2  ) (η ≈ 100%)
-     │   │       ├─ LPG Appliances         → fuel: LPG         (#8  ) (η ≈ 100%)
-     │   │       └─ Kerosene Appliances    → fuel: Kerosene    (#3  ) (η ≈ 100%)
+     │   │   │   ├─ Electric Traditional → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   ├─ Electric LED         → fuel: Electricity (#1  ) (η ≈ 100%)
+     │   │   │   └─ Kerosene Lamps       → fuel: Kerosene    (#3  ) (η ≈ 10%)
+     │   │   └─ Other Equipment
+     │   │       ├─ Electric Equipment    → fuel: Electricity            (#1  ) (η ≈ 100%)
+     │   │       ├─ Natural Gas Equipment → fuel: Natural gas            (#2  ) (η ≈ 100%)
+     │   │       ├─ LPG Equipment         → fuel: LPG                    (#8  ) (η ≈ 100%)
+     │   │       ├─ Kerosene Equipment    → fuel: Kerosene               (#3  ) (η ≈ 100%)
+     │   │       ├─ Diesel Genset         → fuel: Gas and diesel oil     (#98 ) (η ≈ 100%)
+     │   │       ├─ Gasoline Genset       → fuel: Motor gasoline         (#102) (η ≈ 100%)
+     │   │       ├─ Fuel Oil Equipment    → fuel: Fuel oil               (#62 ) (η ≈ 100%)
+     │   │       ├─ Wood Equipment        → fuel: Fuelwood and woodwaste (#94 ) (η ≈ 100%)
+     │   │       ├─ Charcoal Equipment    → fuel: Charcoal               (#14 ) (η ≈ 100%)
+     │   │       ├─ Biomass Equipment     → fuel: Other biomass          (#106) (η ≈ 100%)
+     │   │       ├─ Biogas Equipment      → fuel: Biogas                 (#35 ) (η ≈ 100%)
+     │   │       ├─ Coal Equipment        → fuel: Other bituminous coal  (#79 ) (η ≈ 100%)
+     │   │       └─ Town Gas Equipment    → fuel: Gas works gas          (#76 ) (η ≈ 100%)
      │   └─ Others_Unspecified          [balancing node — one leaf per union fuel]
      │        ├─ Electricity                         → fuel: Electricity (#1) (η = 100%)
      │        ├─ Natural gas                         → fuel: Natural gas (#2) (η = 100%)
@@ -409,6 +413,7 @@ Demand
      │        ├─ BKB and PB                          → fuel: BKB and PB (#89) (η = 100%)
      │        ├─ Fuelwood and woodwaste              → fuel: Fuelwood and woodwaste (#94) (η = 100%)
      │        ├─ Gas and diesel oil                  → fuel: Gas and diesel oil (#98) (η = 100%)
+     │        ├─ Industrial waste                    → fuel: Industrial waste (#100) (η = 100%)
      │        ├─ Kerosene type jet fuel              → fuel: Kerosene type jet fuel (#101) (η = 100%)
      │        ├─ Motor gasoline                      → fuel: Motor gasoline (#102) (η = 100%)
      │        ├─ Municipal solid waste renewable     → fuel: Municipal solid waste renewable (#103) (η = 100%)
@@ -417,13 +422,17 @@ Demand
      │        ├─ Other recovered gases               → fuel: Other recovered gases (#110) (η = 100%)
      │        ├─ Solar nonspecified                  → fuel: Solar nonspecified (#117) (η = 100%)
      │        ├─ Municipal solid waste non renewable → fuel: Municipal solid waste non renewable (#122) (η = 100%)
-     │        ├─ Sub bituminous coal                 → fuel: Sub bituminous coal (#123) (η = 100%)
-     │        └─ Industrial waste                    → fuel: Industrial waste (#100) (η = 100%)
+     │        └─ Sub bituminous coal                 → fuel: Sub bituminous coal (#123) (η = 100%)
      └─ (end of Buildings)
 ```
 
 ## Leaf counts
-- Per group/building type: 49 leaves (Space Heating 16, Space Cooling 2, Water Heating 15, Cooking 10, Lighting 2, Appliances 4)
-- Residential: Urban 49 + Rural 49 + Others 36 = 134
-- Services: 4 building types × 49 + Others 36 = 232
-- TOTAL Buildings: 366 leaves
+- Residential per group: 51 (Space Heating 16, Space Cooling 2, Water Heating 16, Cooking 10, Lighting 3, Appliances 4)
+- Services per building type: 50 (Space Heating 16, Space Cooling 2, Water Heating 16, Lighting 3, Other Equipment 13)
+- Residential: 2 × 51 + Others 36 = 138
+- Services: 4 × 50 + Others 36 = 236
+- TOTAL Buildings: 374 leaves
+
+## Others_Unspecified coverage audit (vs ESTO 2015–2022)
+- 16.02 Residential uses 30 fuels; 16.01 Commercial uses 35 fuels; union = 36. The 36 leaves above cover BOTH flows completely (Bagasse is residential-only; jet fuels, MSW, aviation gasoline are commercial-only).
+- 7 fuels appear only pre-2015 (Peat, Peat products, NGL, Naphtha, Gasoline type jet fuel, Refinery gas, Other liquid biofuels) — excluded; the multinode coverage check will flag them if a future dataset revives one.
