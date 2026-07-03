@@ -29,7 +29,8 @@ All artifacts, code, UI text, and logs in **professional English** (project deci
 
 ## Reference assets (test fixtures — copy into `v11/back-end/tests/fixtures/`)
 
-- `Test_LEAP_v2.xlsx` — real LEAP export, Area `FBO_6_Test_Building`, sheet `Export`, 133 rows, years 2022–2060, scenarios `Current Accounts` (ID 1) / `Reference Scenario` (ID 2), branches down to end-use level under `Demand\Buildings\Residential`.
+- `Test_LEAP_v3_Buildings.xlsx` — CANONICAL fixture (validated): Area `FBO_7_Test_Buildings`, 374 device leaves, scenarios Current Accounts/Reference/Target, regions United States + spare Region 1, years 2022–2060, whole-area export (~30k rows).
+- `Test_LEAP_v2.xlsx` — parser-only fixture, Area `FBO_6_Test_Building`, sheet `Export`, 133 rows, years 2022–2060, scenarios `Current Accounts` (ID 1) / `Reference Scenario` (ID 2), branches down to end-use level under `Demand\Buildings\Residential`.
 - `ESTO_codes_to_LEAP_names.xlsx` — sheet `sector_fuel_ESTO_LEAP_names`, columns `category` (products|sectors), `original_label` (ESTO code+name), `leap_name`, `PRODUCT NOT USED IN LEAP` (bool).
 - `20USA_2022_16_02_Residential_2050.json` — v10 save file (tree_state per year, macro_drivers, active_fuels) used as the model-state fixture.
 - Functional spec: `99 - Multinode Integration/SPEC_LEAP_roundtrip.md` in the `fbustos-o/LEAP_manual` repo (branch `claude/leap-energy-demand-format-6w5v8h`) — authoritative for the contract details below.
