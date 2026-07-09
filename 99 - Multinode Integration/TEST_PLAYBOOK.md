@@ -1,106 +1,94 @@
-# Test Playbook — Multinode → LEAP round-trip (Current Accounts + Reference multi-year)
+# Test Playbook v2 — Multinode → LEAP round-trip (base year + 2035 + 2060)
 
-Two batches. Batch 1 = build everything from the LEAP v3 Buildings template. Batch 2 = repeat from a saved JSON / DB load to prove both entry paths reach LEAP identically. Check every ✅; if one fails, note the step and (likely cause) from the troubleshooting table.
+Updated to the actual v11 workflow: projection years are **not auto-generated** — each is created as a **copy of the base case**, then projected (targets/drivers edited), **re-balanced and re-optimized** independently. Milestone set for this run: **2022 (base), 2035, 2060**.
 
-Reference numbers for 20USA Residential base year (from your model): total residential = **11,554 PJ**; households = **132 M**; floor_area = **22,716.89 M m²**; Urban Space Heating base ≈ **3,984 PJ** → FEI ≈ **0.17538 PJ/M m²**.
+Two batches. Batch 1 = build from the LEAP v3 Buildings template. Batch 2 = same outcome from a saved JSON / DB load. Check every ✅; on failure, see the troubleshooting table.
+
+> ⚠️ **Verifier caveat (AUDIT_v11 P1):** until the `verify-roundtrip` rewrite is applied and re-tested, its ≤3 % report is NOT reliable (flat end-uses over-count 100×; scenario splits read the wrong variable). Until then, **LEAP's Results view is the ground truth** for every energy check below.
+
+Reference numbers, 20USA Residential base year: total = **11,554 PJ**; households = **132 M**; floor_area = **22,716.89 M m²**; Urban Space Heating ≈ **3,984 PJ** → FEI ≈ **0.17538 PJ/M m²** when linked to floor_area.
 
 ---
 
 ## Pre-flight (once)
-
-- ✅ Back up the LEAP area `FBO_7_Test_Buildings` before any import (File → Save As a copy).
-- ✅ In LEAP, note base year = 2022, end year = 2060, scenario = **Reference** exists.
-- ✅ Have the canonical template `Test_LEAP_v3_Buildings.xlsx` at hand.
+- ✅ Back up the LEAP area `FBO_7_Test_Buildings` (work on a copy for imports).
+- ✅ LEAP: base year 2022, end year 2060, scenario `Reference` present.
+- ✅ `Test_LEAP_v3_Buildings.xlsx` at hand.
 
 ---
 
-## BATCH 1 — Build from the LEAP template
+## BATCH 1 — From the LEAP template
 
 ### Step 1.1 — Load template & bind
-- Create project, economy **20USA**, year **2022**, sector **16.02 Residential**; load `Test_LEAP_v3_Buildings.xlsx`.
-- ✅ Reconciliation shows **138 Residential leaves bound**, 0 unbound; Services out of scope; region = United States; scenarios Current Accounts / Reference / Target detected.
-- ✅ Fuel-coverage check: no blocking findings (all ESTO fuels with target map to a bound leaf).
-- ✅ Efficiencies auto-prefilled (spot-check Heat Pump = 300, Natural Gas Stove = 55, Kerosene Lamps = 10).
+- New project: 20USA / 2022 / 16.02 Residential; load `Test_LEAP_v3_Buildings.xlsx`.
+- ✅ Reconciliation: **138 Residential leaves bound**, 0 unbound; Services out of scope; scenarios CA/Reference/Target and region United States detected.
+- ✅ Fuel coverage: no blocking findings.
+- ✅ Efficiencies prefilled (Heat Pump 300, Natural Gas Stove 55, Kerosene Lamps 10).
 
-### Step 1.2 — Base year: link drivers, balance, optimize
-- Link drivers: Space Heating & Space Cooling → **floor_area**; Water Heating, Cooking, Lighting, Appliances → **households**.
-- Run Balance, then SLSQP.
-- ✅ In multinode, base-year total ≈ 11,554 PJ and per-fuel matches ESTO within 1–3 %.
-- ✅ Sibling weights sum to 1.0 per parent (normalization pass ran).
+### Step 1.2 — Base case (2022): drivers, balance, optimize
+- Link drivers: Space Heating & Cooling → **floor_area**; Water Heating, Cooking, Lighting, Appliances → **households**.
+- Balance → SLSQP.
+- ✅ Total ≈ 11,554 PJ; per-fuel vs ESTO within 1–3 %; sibling weights sum to 1.0.
+- ✅ Save (DB and/or Download JSON) — this is the source for Batch 2.
 
-### Step 1.3 — Project 2023 (+10 % global, no structural change)
-- Add milestone year **2023**; set the macro target / driver growth so total demand is **+10 %** vs 2022, shares unchanged.
-- ✅ 2023 total ≈ 12,710 PJ (11,554 × 1.10); per-end-use and per-fuel shares ≈ same % as 2022.
-- ✅ Driver values for 2023 are set (households/floor_area for 2023 present, not just gdp).
+### Step 1.3 — Create 2035 as a COPY of the base case, project it
+- Create milestone year **2035** (copy of base case).
+- ✅ Immediately after copying: 2035 tree = identical structure and weights to 2022 (spot-check one end-use).
+- Project it: set the 2035 macro target (e.g. total +10 %) and the 2035 driver values (households, floor_area); adjust any weight bounds you want to steer (e.g. mild electrification).
+- **Re-balance + re-optimize the 2035 slice.**
+- ✅ 2035 total = your target; per-fuel residuals within tolerance; weights re-optimized (different from 2022 where you changed bounds).
 
-### Step 1.4 — Project 2060 (electrification + growth)
-- Add milestone year **2060**; set some fuels to **0** (e.g. Kerosene/Charcoal in an end-use), raise **Electricity** demand and the global total.
-- ✅ Zeroed fuels show weight/`calculated_pj` = 0 in 2060; Electricity share visibly higher than 2022.
-- ✅ 2060 total = your chosen higher figure; balance still closes (Others_Unspecified absorbs residual).
+### Step 1.4 — Create 2060 as a COPY, project deep changes
+- Create milestone year **2060** (copy of base case or of 2035 — note which, for reproducibility).
+- Project it: **zero out** selected fuels (e.g. Kerosene/Charcoal heaters: max_weight = 0), **raise Electricity** (heat pumps up), raise the global total; set 2060 driver values.
+- **Re-balance + re-optimize the 2060 slice.**
+- ✅ Zeroed fuels show weight/pj = 0; Electricity share clearly above 2022; total = target; Others_Unspecified absorbs residual.
+- ✅ Efficiencies per year where changed (e.g. Heat Pump 2060 > 2022 if you model improvement).
 
-### Step 1.5 — Add 2035 (intermediate)
-- Add milestone year **2035**; set values between 2023 and 2060.
-- ✅ Project now has years [2022, 2023, 2035, 2060]; each has its own balanced `calculated_pj`; removing/re-adding 2035 is clean.
+### Step 1.5 — Compile to LEAP & review
+- Compile Review: Region = United States, Scenario = **Reference**.
+- ✅ Modal scrollable/collapsible; Year filter switches 2022 / 2035 / 2060.
+- ✅ Current Accounts (2022): end-use FEI (PJ or PJ/driver-unit); device Fuel Share sums 100 %; Efficiency ×100; driver-linked end-uses show Activity Level = driver value (Million + Household/Square Meter).
+- ✅ Reference: UEI per end-use for 2035 & 2060; device Activity Level (useful-energy share) per year; Efficiency per year; **no Fuel Share rows**; **2022 column empty in Reference**.
+- ✅ No sanity badges (shares ≠ 100, non-PJ units).
+- Download.
 
-### Step 1.6 — Compile to LEAP & review
-- Open Compile Review, target Region = United States, Scenario = **Reference**.
-- ✅ Review is scrollable/collapsible; **Year filter** lets you switch 2022/2023/2035/2060.
-- ✅ Current Accounts (2022): end-use **Final Energy Intensity** in PJ; device **Fuel Share** sums to 100 % per end-use; **Efficiency** ×100; driver-linked end-uses show Activity Level = driver value (Million, Square Meter / Household).
-- ✅ Reference: end-use **Useful Energy Intensity** per year; device **Activity Level** (share) per year; **Efficiency** per year; **no Fuel Share** rows; **2022 column empty in Reference** (anchored from CA).
-- ✅ Sanity badges: no "shares ≠ 100 %", no "unit ≠ PJ".
-- Download the workbook.
+### Step 1.6 — Import into LEAP & verify (ground truth)
+- LEAP → Analysis → Import from Excel → **as Data**, "Values only replace Interp/Step" ON.
+- **Current Accounts:** ✅ Urban Space Heating: Activity = 22,716.89 M m², FEI ≈ 0.17538; a device shows expected Fuel Share/Efficiency; Results total ≈ 11,554 PJ, per-fuel ≈ ESTO.
+- **Reference:** ✅ pick a changed device (e.g. Heat Pump in Space Heating) → Activity Level tab shows the trajectory (2022 anchor from CA, then 2035 and 2060 points, smooth interpolation, **no zero dips between milestones**).
+- ✅ Results per year: 2035 total = its target; 2060 total = its target; zeroed fuels → 0 by 2060; Electricity rises.
+- ✅ `Target` scenario untouched (trimming worked).
 
-### Step 1.7 — Import into LEAP & verify
-- LEAP → Analysis → **Import from Excel** → Import as **Data**, "Values only replace Interp/Step" ON.
-- **Current Accounts checks (Analysis view, Scenario = Current Accounts, Region = United States):**
-  - ✅ `Demand\Buildings\Residential\Urban\Space Heating`: Final Energy Intensity ≈ 3,984 (if flat) or Activity Level = 22,716.89 (Million m²) + FEI ≈ 0.17538 (if driver-linked).
-  - ✅ A device (e.g. Diesel Heater) shows the expected Fuel Share and Efficiency.
-  - ✅ Results view → total residential demand ≈ 11,554 PJ; per-fuel ≈ ESTO.
-- **Reference checks (Scenario = Reference):**
-  - ✅ Pick `…\Space Heating\Electric Heater` → Activity Level tab shows a trajectory 2022→2060 (2022 from CA, then your 2023/2035/2060 points, interpolated between).
-  - ✅ Efficiency tab shows the per-year values.
-  - ✅ Results view → total demand: 2023 ≈ +10 % vs 2022; 2060 = your higher figure; the zeroed fuels drop to 0; Electricity rises.
-  - ✅ Chart the trajectory: smooth interpolation between your milestone years (no zero dips in the in-between years → confirms non-milestone cells were cleared, not written 0).
-
-**Batch 1 pass = Current Accounts correct AND Reference shows the multi-year trajectory in LEAP Results.**
+**Batch 1 pass = CA exact + 2035/2060 trajectories visible and correct in LEAP Results.**
 
 ---
 
-## BATCH 2 — Same outcome from a saved JSON / DB load
+## BATCH 2 — Same outcome from saved JSON / DB
 
-Goal: prove the model reaches LEAP identically whether structure came from the template, a saved JSON, or the DB.
-
-### Step 2.1 — Load model, then attach template
-- New session; **load the saved JSON** (the one with all scenarios) OR load the project from the DB.
-- ✅ Compile / Verify are **disabled** with tooltip "Attach a LEAP template first" (no template yet).
-- Use **Load LEAP Template** → upload `Test_LEAP_v3_Buildings.xlsx`.
-- ✅ Reconciliation binds by branch path: 138 bound, 0 unbound. (If any unbound → it's a name mismatch; see troubleshooting.)
-
-### Step 2.2 — Compile & compare
-- Compile Reference; download.
-- ✅ The generated workbook is **cell-for-cell equivalent** to Batch 1's (same FEI, Fuel Share, Activity Level, Efficiency per year) — allowing for any values you changed. Quick way: open both, compare Urban Space Heating block.
-
-### Step 2.3 — Import & verify in LEAP
-- Import into a fresh copy of the area; repeat the Current Accounts + Reference checks from Step 1.7.
-- ✅ Same demand totals and trajectories as Batch 1.
-
-**Batch 2 pass = JSON-load and DB-load produce the same LEAP result as the template-built path.**
+1. New session → load the saved JSON (with base + 2035 + 2060) or load the project from DB.
+   - ✅ Compile/Verify disabled with tooltip until a template is attached.
+2. Attach `Test_LEAP_v3_Buildings.xlsx` → ✅ 138 bound / 0 unbound (path binding).
+3. Compile Reference → ✅ workbook cell-for-cell equivalent to Batch 1's (compare the Urban Space Heating block for 2022/2035/2060).
+4. Import into a fresh area copy → ✅ same LEAP results as Batch 1.
 
 ---
 
 ## Cross-cutting acceptance
-- ✅ `verify-roundtrip` (upload the LEAP re-export): per-fuel, per-year deviation ≤ 3 % for 2022/2023/2035/2060.
-- ✅ Target scenario in LEAP is untouched after import (output trimming worked).
-- ✅ Re-importing the same file twice is idempotent (no doubling, no drift).
+- ✅ Re-importing the same file twice into LEAP is idempotent.
+- ✅ Compiling against a template from another area (e.g. the old `FBO_6` v2 file) is refused (fingerprint) — run once as a negative test.
+- ⚠️ `verify-roundtrip` ≤3 % per fuel per year: only meaningful **after** the AUDIT_v11 P1 fix; then expect ~0 % on a writer-produced file re-uploaded unchanged.
 
-## Troubleshooting quick-reference
-| Symptom in LEAP / multinode | Likely cause |
+## Troubleshooting
+| Symptom | Likely cause |
 |---|---|
-| Demand = 0 for an end-use | FEI row not written / driver value = 0 (flat fallback) |
-| Fuel shares sum ≠ 100 % | rounding — must normalize against sibling sum, not parent |
-| Device trajectory dips to 0 between milestone years | non-milestone year cells not cleared (Method must be Interp, cells empty) |
-| Values appear one year off (2023 instead of 2022) | base-year column mapping regression |
-| Many "unbound" at reconcile | branch-name mismatch (case/spacing) or wrong sector root prefix |
-| Target scenario changed after import | output trimming not applied (Target rows leaked into the file) |
-| Driver shows units "USD" everywhere | end-use linked to gdp by default instead of floor_area/households |
-| 2060 zeroed fuel still shows energy | weight not actually 0, or normalization forced a uniform split on all-zero siblings |
+| 2035/2060 copy differs from base right after creation | copy routine not deep-copying weights/fuels/efficiencies |
+| Re-balance of one year changes another year's numbers | tree slices share references (need deep copy per year) |
+| Writer error "Milestone year X not present in template columns" | projection year outside 2022–2060 or template mismatch |
+| Trajectory dips to 0 between milestones in LEAP | non-milestone cells not cleared / Method not Interp |
+| Demand = 0 for an end-use in LEAP | FEI missing or driver value 0 (flat fallback triggered) |
+| Fuel shares ≠ 100 % | normalization must be against sibling sum |
+| verify-roundtrip fails everything while LEAP Results look right | AUDIT_v11 P1 (verifier bug) — trust LEAP Results |
+| Zeroed fuel still shows energy in 2060 | weight not truly 0 (check max_weight=0 honored) or uniform-split fallback on all-zero siblings |
+| Values one year off | base-year column mapping regression |
+| Many unbound at attach | name mismatch (case/spacing) or wrong sector root prefix |
